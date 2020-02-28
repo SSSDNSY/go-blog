@@ -1,0 +1,42 @@
+{{template "header"}}
+<title>文章 - imiBLOG</title>
+</head>
+<body class="">
+{{template "navbar" .}}
+<div class="container">
+    <h1>文章列表</h1>
+    <h6>-</h6>
+    <a href="/topic/add" class="btn btn-primary pull-right">添加文章</a>
+    <table class="table table-striped table-hover" style="table-layout:fixed; text-overflow:ellipsis;">
+        <thead>
+        <th>#</th>
+        <th>文章名称</th>
+        <th>创建时间</th>
+        <th>上次更新</th>
+        <th>浏览数量</th>
+        <th>回复数量</th>
+        <th>最新回复</th>
+        <th>操 作</th>
+        </thead>
+        <tbody>
+        {{range .Topics}}
+            <tr>
+                <th>{{.Id}}</th>
+                <th>{{.Title}}</th>
+                <th>{{.Created}}</th>
+                <th>{{.Updated}}</th>
+                <th>{{.Views}}</th>
+                <th>{{.ReplyCount}}</th>
+                <th>{{.ReplyTime}}</th>
+                <th>
+                    <a href="/topic/edit/?tid={{.Id}}">编辑</a>
+                    <a href="/topic/delete/{{.Id}}">删除</a>
+                </th>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+

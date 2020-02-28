@@ -1,0 +1,39 @@
+{{template "header"}}
+<title>文章修改 - imiBLOG</title>
+</head>
+<body class="">
+{{template "navbar" .}}
+<div class="container">
+    <h1>文章修改</h1>
+    <form action="/topic" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="">标题：</label>
+            <input type="text" name="title" class="form-control" value="{{ .Topic.Title}}">
+            <input type="hidden" name="tid" value="{{.Tid}}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">分类：</label>
+            <input type="text" name="category" class="form-control" value="{{ .Topic.Category}}">
+        </div>
+        <div class="form-group">
+            <label for="">标签：</label>
+            <input type="text" name="label" class="form-control" value="{{ .Topic.Labels}}">
+        </div>
+        <div class="form-group">
+            <label for="">附件：( <a href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a>)</label>
+            <input type="file" name="attachment" class="form-control" value="">
+        </div>
+        <div class="form-group">
+            <label for="">正文：</label>
+            <textarea name="content" id="" cols="30" rows="10" class="form-control">
+                {{.Topic.Content}}
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">确认修改</button>
+        <br>
+        <br>
+    </form>
+</div>
+</body>
+</html>
+

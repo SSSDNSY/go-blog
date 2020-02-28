@@ -1,0 +1,49 @@
+{{template "header"}}
+<title>编辑 {{.Topic.Title}} - imiBLOG</title>
+</head>
+<body class="">
+{{template "navbar" .}}
+<div class="container well-lg bg-info">
+    <h5 class="pull-right">附件：( <a href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a>)</h5>
+    <h1>{{.Topic.Title}}</h1>
+    <p class="text-primary">{{.Topic.Content}}</p>
+    <a href="/topic/edit?tid={{.Tid}}" class="btn btn-primary pull-right">修改文章</a>
+</div>
+<br/>
+<br/>
+<div class="container">
+    {{$labels := .Labels}}
+    {{range $labels}}
+        <button class="btn btn-default"><a href="/?label={{.}}"> {{.}}</a></button>
+    {{end}}
+</div>
+
+<div class="container">
+    {{$Tid := .Topic.Id}}
+    {{$isLogin := .IsLogin}}
+    {{range .Replies}}
+        <div class="well">
+            <h4> {{.Name}}</h4>
+            <div class="text-primary">{{.Content}}</div>
+            {{if $isLogin}}
+                <a class="pull-right text-danger" href="/reply/delete?tid={{$Tid}}&rid={{.Id}}">删除</a>
+            {{end}}
+        </div>
+    {{end}}
+    <h3>文章评论</h3>
+    <form action="/reply/add" method="post">
+        <input type="hidden" name="tid" value="{{.Topic.Id}}">
+        <div class="form-group">
+            <label for="">显示昵称：</label>
+            <input type="text" class="form-control" name="nickName">
+        </div>
+        <div class="form-group">
+            <label for="">评论内容：</label>
+            <textarea name="content" id="" cols="30" rows="5" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">评论</button>
+    </form>
+</div>
+</body>
+</html>
+

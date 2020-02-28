@@ -1,0 +1,35 @@
+{{template "header"}}
+<title>本机文件 - imiBLOG</title>
+</head>
+<body class="">
+{{template "navbar" .}}
+<div class="container">
+    <h1>文件列表</h1>
+    <a href="/topic/add/file" class="btn btn-primary pull-right">上传</a>
+    <table class="table table-striped table-hover">
+        <thead>
+        <th>#</th>
+        <th>文件名称</th>
+        <th>创建时间</th>
+        <th>文件大小</th>
+        <th>操 作</th>
+        </thead>
+        <tbody>
+        {{range .Files}}
+            <tr>
+                <th>{{.Id}}</th>
+                <th>{{.Name}}</th>
+                <th>{{.Size}}</th>
+                <th>{{.Time}}</th>
+                <th>
+                    <a href="/attachment/{{.Name}}">下载</a>
+                    <a href="/attachment/delete/{{.Id}}">删除</a>
+                </th>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+

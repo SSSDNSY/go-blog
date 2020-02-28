@@ -1,0 +1,51 @@
+{{template "header"}}
+<title>添加文章 - imiBLOG</title>
+</head>
+<body class="">
+{{template "navbar" .}}
+<div class="container">
+    <h1 id="h1t">添加文章</h1>
+    <form action="/topic" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="">标题：</label>
+            <input type="text" name="title" id="title" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">分类：</label>
+            <input type="text" name="category" id="category" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">标签：</label>
+            <input type="text" name="label" id="label" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">附件：</label>
+            <input type="file" name="attachment" class="form-control" onchange="fileChange(this);">
+        </div>
+        <div class="form-group">
+            <label for="">文章内容：</label>
+            <textarea name="content" id="" cols="30" rows="15" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">确认添加</button>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        if ("file" == window.location.href.split('/')[window.location.href.split('/').length - 1]) {
+            $("#h1t").text("上传文件")
+        }
+    })
+
+    function fileChange(v) {
+        if ($("#title").val().trim().length < 1) {
+            $("#title").val(v.value.split('\\')[v.value.split('\\').length - 1])
+        }
+        if ($("#category").val().trim().length < 1) {
+            $("#category").val("JavaScript自填充")
+        }
+    }
+</script>
+
+</html>
+
