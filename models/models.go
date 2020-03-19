@@ -60,21 +60,21 @@ type Files struct {
 }
 
 type BDParam struct {
-	uname  string
-	level  string
-	intro  string
-	expnum string
-	fans   string
+	Uname  string
+	Level  string
+	Intro  string
+	Expnum string
+	Fans   string
 
-	returns  string
-	quality  string
-	interact string
-	cash     string
-	wealth   string
-	active   string
-	origin   string
+	Returns  string
+	Quality  string
+	Interact string
+	Cash     string
+	Wealth   string
+	Active   string
+	Origin   string
 
-	timing string
+	Timing string
 }
 
 func RegisterDB() {

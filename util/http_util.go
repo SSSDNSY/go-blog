@@ -1,13 +1,13 @@
 package util
 
 import (
-	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/gpmgo/gopm/modules/log"
 	"go-blog/models"
-	"golang.org/x/net/html"
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Get(baiduId string) (string, error) {
@@ -32,31 +32,53 @@ func Get(baiduId string) (string, error) {
 		log.Error("httpUtil err : ", err)
 		return "", err
 	}
-	fmt.Println(string(body))
-	return string(body), nil
+	//fmt.Println(string(body))
+	return string(body), err
 }
 
-func ParseBDParam(htmlTxt string) (models.BDParam, error) {
-	htmlTxt = `
-<span class="huixiang" style="opacity: 1;display: block">回享度</span>
-<span class="huixiang-value" style="opacity: 1;display: block">2.84</span>
-<span class="quality" style="opacity: 1;display: block">优质度</span>
-<span class="quality-value value" style="opacity: 1;display: block">4.59</span>
-<span class="origin" style="opacity: 1;display: block">原创度</span>
-<span class="origin-value value" style="opacity: 1;display: block">10</span>
-<span class="interact" style="opacity: 1;display: block">互动度</span>
-<span class="interact-value value" style="opacity: 1;display: block">9.83</span>
-</div>
-<span class="active" style="opacity: 1; display: block">活跃度</span>
-<span class="active-value value" style="opacity: 1; display: block">9.36</span>`
+func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
+	t1 := time.Now()
 
-	var bd = models.BDParam{}
-	doc, err := html.Parse(strings.NewReader(htmlTxt))
+	bd := &models.BDParam{}
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
 		log.Fatal("", err)
 		return bd, err
 	}
-	fmt.Println(doc)
-
+	doc.Find("a.uname").Each(func(i int, s *goquery.Selection) {
+		bd.Uname = s.Text()
+	})
+	doc.Find("span.active-value").Each(func(i int, s *goquery.Selection) {
+		bd.Active = s.Text()
+	})
+	doc.Find("span.cash-value").Each(func(i int, s *goquery.Selection) {
+		bd.Cash = s.Text()
+	})
+	doc.Find("span.exp-num").Each(func(i int, s *goquery.Selection) {
+		bd.Expnum = s.Text()
+	})
+	doc.Find("span.fans-num").Each(func(i int, s *goquery.Selection) {
+		bd.Fans = s.Text()
+	})
+	doc.Find("span.quality-value").Each(func(i int, s *goquery.Selection) {
+		bd.Intro = s.Text()
+	})
+	doc.Find("dd.info-meta").Each(func(i int, s *goquery.Selection) {
+		bd.Level = s.Text()
+	})
+	doc.Find("span.origin-value").Each(func(i int, s *goquery.Selection) {
+		bd.Origin = s.Text()
+	})
+	doc.Find("span.huixiang-value").Each(func(i int, s *goquery.Selection) {
+		bd.Returns = s.Text()
+	})
+	doc.Find("span.quality-value").Each(func(i int, s *goquery.Selection) {
+		bd.Quality = s.Text()
+	})
+	doc.Find("span.wealth-value").Each(func(i int, s *goquery.Selection) {
+		bd.Wealth = s.Text()
+	})
+	t2 := time.Now()
+	bd.Timing = string(t2.Sub(t1))
 	return bd, err
 }
