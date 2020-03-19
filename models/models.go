@@ -59,6 +59,24 @@ type Files struct {
 	Time time.Time
 }
 
+type BDParam struct {
+	uname  string
+	level  string
+	intro  string
+	expnum string
+	fans   string
+
+	returns  string
+	quality  string
+	interact string
+	cash     string
+	wealth   string
+	active   string
+	origin   string
+
+	timing string
+}
+
 func RegisterDB() {
 	if !com.IsExist(_DB_NAME) {
 		os.MkdirAll(path.Dir(_DB_NAME), os.ModePerm)
