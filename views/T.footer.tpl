@@ -1,6 +1,7 @@
 {{define "footer"}}
-    <footer>
-
+    <footer class="blog-footer ">
+        <p>pengzh all right reserved</p>
+        <p><a href="http://www.beian.miit.gov.cn/" target="_blank"> 湘ICP备20003054号</a></p>
     </footer>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->

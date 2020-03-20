@@ -4,20 +4,22 @@
 <body class="">
 {{template "navbar" .}}
 <div class="container">
-    <h1>分类列表</h1>
-    <h6>-</h6>
-    <form class="form-inline" method="get" action="/category">
-        <div class="form-group">
+    <h2>分类列表</h2>
+    <form class="form-inline float-right" method="get" action="/category">
+        <div class="form-group mb-2">
             <label for="inputEmail3" class="exampleInputName2">分类名称：</label>
-            <div class="input-group">
+            <div class="input-group ">
                 <input name="name" type="text" class="form-control col-row-5" placeholder="请输入分类">
                 <input name="op" type="hidden" value="add">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">确定</button>
-        <button type="submit" class="btn btn-primary" onclick="window.location.href='/';return false;">返回</button>
+        <div class="btn-group mb-2">
+            <button type="submit" class="btn btn-primary">确定</button>
+            <button type="submit" class="btn btn-primary" onclick="window.location.href='/';return false;">返回</button>
+        </div>
     </form>
-    <table class="table table-striped ">
+    <br>
+    <table class="table table-striped mt-2 mb-2">
         <thead>
         <th>#</th>
         <th>名称</th>
