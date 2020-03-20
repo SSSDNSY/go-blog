@@ -14,6 +14,7 @@
                 <li class="nav-item {{if .IsCategory}}active{{end}}"><a href="/category" class="nav-link "> 分类</a>
                 </li>
                 <li class="nav-item {{if .IsTopic}}active{{end}}"><a href="/topic" class="nav-link"> 文章</a></li>
+                <li class="nav-item {{if .IsBd}}active{{end}}"><a href="/bdjy" class="nav-link"> 百度经验</a></li>
                 <li class="nav-item {{if .IsFile}}active{{end}}"><a href="/file" class="nav-link"> 文件</a></li>
                 {{if .IsLogin}}
                     <li class="nav-item">
