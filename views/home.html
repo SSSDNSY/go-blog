@@ -3,8 +3,8 @@
 </head>
 <body class="">
 {{template "navbar" .}}
-<div class="container">
-       <div class="col-md-10">
+<div class="container-fluid">
+       <div class="col-sm-11 col-md-10">
         <div class="alert alert-info">
             {{range .Topics}}
                 <div class="well">
@@ -19,7 +19,7 @@
             {{end}}
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-sm-1 col-md-2">
         <h3>文章分类</h3>
         <ul>
             {{range .Categories}}
@@ -28,6 +28,7 @@
         </ul>
     </div>
 </div>
+{{template "footer"}}
 </body>
 </html>
 
