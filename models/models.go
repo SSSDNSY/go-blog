@@ -75,6 +75,8 @@ type BDParam struct {
 	Origin   string
 
 	Timing string
+
+	Others map[string]string
 }
 
 func RegisterDB() {

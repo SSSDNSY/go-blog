@@ -18,6 +18,7 @@ func Init() {
 	beego.Router("/bdjy", &controllers.BdjyController{})
 	//自动路由
 	beego.AutoRouter(&controllers.TopicController{})
+	beego.AutoRouter(&controllers.BdjyController{})
 	//静态文件处理（附件）
 	//os.Mkdir("attachment",os.ModePerm)
 	//控制器处理

@@ -36,7 +36,8 @@ li > a:hover {
     padding-left: 0;
     list-style: none;
 }
-.text-center{
+
+.text-center {
     text-align: center;
 }
 
@@ -45,4 +46,20 @@ li > a:hover {
     max-width: 330px;
     padding: 15px;
     margin: auto;
+}
+
+.mn-100 {
+    min-height: max-content;
+}
+.cen{
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 auto;
+}
+.bd-img {
+    height: 12rem;
+    width: 12rem;
+    border-radius: 50%;
+    mso-border-shadow: yes;
+    box-shadow: #3c3c3c;
 }

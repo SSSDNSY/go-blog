@@ -9,18 +9,21 @@ import (
 	"strings"
 )
 
+const nucUrl = "https://jingyan.baidu.com/user/nuc"
+const referer = "https://jingyan.baidu.com/"
+
 func Get(baiduId string) (string, error) {
 
 	//构造请求
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://jingyan.baidu.com/user/nuc", nil)
+	req, err := http.NewRequest("GET", nucUrl, nil)
 	if err != nil {
 		log.Error("httpUtil err : ", err)
 		return "", err
 	}
 
 	//设置请求头
-	req.Header.Set("Referer", "https://jingyan.baidu.com/")
+	req.Header.Set("Referer", referer)
 	req.Header.Set("Cache-Control", "max-age=0")
 	req.Header.Set("Content-Type", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
@@ -41,6 +44,7 @@ func Get(baiduId string) (string, error) {
 func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 
 	bd := &models.BDParam{}
+	otherMap := make(map[string]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
 		log.Fatal("", err)
@@ -82,5 +86,9 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 	doc.Find("span.wealth-value").Each(func(i int, s *goquery.Selection) {
 		bd.Wealth = s.Text()
 	})
+	doc.Find("img[alt=" + bd.Uname + "]").Each(func(i int, s *goquery.Selection) {
+		otherMap["avatorUrl"], _ = s.Attr("src")
+	})
+	bd.Others = otherMap
 	return bd, err
 }
