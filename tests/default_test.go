@@ -67,3 +67,11 @@ func TestParseBDParam(t *testing.T) {
 	fmt.Printf("%+v\n", Bd)
 
 }
+
+func TestStrings(t *testing.T) {
+	fmt.Println(strings.Split("2019-12-19 17:31:47.6821378 +0000 UTC", ".")[0])
+}
+
+func TestTime(t *testing.T) {
+	time.Now().Local()
+}

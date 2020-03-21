@@ -68,7 +68,7 @@ func TestCookieSet2(t *testing.T) {
 }
 
 func TestTimeNow(t *testing.T) {
-	tq := time.Now().Local()
+	tq := time.Now().Local().Local()
 	t1 := tq.Format("2006-01-02 15:04:05")
 	t2, _ := time.Parse("2006-01-02 15:04:05", t1)
 	fmt.Println(tq)

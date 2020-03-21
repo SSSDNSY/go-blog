@@ -5,11 +5,14 @@ import (
 	"go-blog/models"
 	"path"
 	"strings"
+	"time"
 )
 
 type TopicController struct {
 	beego.Controller
 }
+
+const TIME_LAYOUT = "2006-01-02 15:04:05"
 
 func (this *TopicController) Get() {
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
@@ -19,6 +22,11 @@ func (this *TopicController) Get() {
 	if nil != err {
 		beego.Error(err.Error())
 	} else {
+		for t, _ := range topics {
+			topics[t].ReplyTime, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
+			topics[t].Created, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
+			topics[t].Updated, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
+		}
 		this.Data["Topics"] = topics
 	}
 }
