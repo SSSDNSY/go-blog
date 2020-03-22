@@ -16,7 +16,7 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 	otherMap := make(map[string]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
-		log.Fatal("", err)
+		log.Fatal("goquery.NewDocumentFromReader err :", err)
 		return bd, err
 	}
 	doc.Find("a.uname").Each(func(i int, s *goquery.Selection) {
@@ -60,4 +60,26 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 	})
 	bd.Others = otherMap
 	return bd, err
+}
+
+/**
+解析百度经验提交页面
+*/
+func ParseExPublished(htmlTxt string) map[string]string {
+	//totalView:=0
+	//totalVote
+	//totalPn=0
+
+	result := make(map[string]string)
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
+	if err != nil {
+		log.Fatal("goquery.NewDocumentFromReader err :", err)
+		return result
+	}
+	//totalView
+	str := doc.Find(".padding8").Get(2).Attr[1].Val
+
+	//赋值
+	result["totalView"] = strings.Split(str, "=")[3]
+	return result
 }
