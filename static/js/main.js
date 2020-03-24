@@ -4,6 +4,8 @@ $(function () {
     if(param && window.location.pathname =="/bdjy"){
         refreshData(JSON.parse(param))
     }
+    $("#card2").css("display","none")
+    $("#card3").css("display","none")
 })
 
 function onMyCookie(e) {
@@ -44,6 +46,14 @@ function onMyCookie(e) {
     }
 }
 
+function showMyTotal(e){
+    $.post("/bdjy/total", {
+        "uuid": $.trim($(e).val())
+    }, function (data) {
+        console.log(data)
+    })
+}
+
 function refreshData(data) {
     $(avatorId).attr("src", data.Others.avatorUrl)
     $("#bdname").text(data.Uname)
@@ -53,4 +63,9 @@ function refreshData(data) {
     myRadarChart.setOption(o3)
     // { name: '现金', max: 1000}
     myRadarChart.hideLoading()
+}
+
+function changeCard(p) {
+    $(p).addClass("active").addClass("text-info").parent().siblings().children().removeClass("active").removeClass("text-info");
+    $("#card"+p.dataset["card"]).show().siblings("div").hide()
 }

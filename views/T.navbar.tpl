@@ -1,5 +1,5 @@
 {{define "navbar"}}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="/">我的博客</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-1"
                 type="button">
@@ -31,5 +31,5 @@
             </form>
         </div>
     </nav>
-
+<br><br><br>
 {{end}}
