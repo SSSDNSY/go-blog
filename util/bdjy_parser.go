@@ -4,6 +4,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"go-blog/models"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -65,10 +66,10 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 /**
 解析百度经验提交页面
 */
-func ParseExPublished(htmlTxt string) map[string]string {
-	//totalView:=0
-	//totalVote
-	//totalPn=0
+func ParseExPublished(htmlTxt string, bdid string) map[string]string {
+	totalView := 0
+	totalVote := 0
+	totalFavo := 0
 
 	result := make(map[string]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
@@ -78,8 +79,48 @@ func ParseExPublished(htmlTxt string) map[string]string {
 	}
 	//totalView
 	str := doc.Find(".padding8").Get(2).Attr[1].Val
+	totalPn, _ := strconv.Atoi(strings.Split(str, "=")[3])
+
+	for i := 0; i <= totalPn; i += 20 {
+		htmstr := GetExpNum(bdid, strconv.Itoa(i))
+		tmp := GetOnePageTotal(htmstr)
+		v, _ := strconv.Atoi(tmp["v"])
+		t, _ := strconv.Atoi(tmp["t"])
+		f, _ := strconv.Atoi(tmp["f"])
+		totalView += v
+		totalVote += t
+		totalFavo += f
+	}
 
 	//赋值
-	result["totalView"] = strings.Split(str, "=")[3]
+	result["totalPn"] = strings.Split(str, "=")[3]
+	result["totalVote"] = strconv.Itoa(totalVote)
+	result["totalFavo"] = strconv.Itoa(totalFavo)
+	result["totalView"] = strconv.Itoa(totalView)
 	return result
+}
+
+/**
+* 得到一页的统计值
+ */
+func GetOnePageTotal(htmlTxt string) map[string]string {
+	var view = 0
+	var favo = 0
+	var vote = 0
+
+	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
+	doc.Find("p.f-meta").Each(func(i int, s *goquery.Selection) {
+		_v, _ := strconv.Atoi(s.Find("span.view-count").Text())
+		_t, _ := strconv.Atoi(s.Find("span.vote-count").Text())
+		_f, _ := strconv.Atoi(s.Find("span.favo-count").Text())
+		view += _v
+		vote += _t
+		favo += _f
+	})
+	rtnMap := make(map[string]string)
+	rtnMap["v"] = strconv.Itoa(view)
+	rtnMap["t"] = strconv.Itoa(vote)
+	rtnMap["f"] = strconv.Itoa(favo)
+
+	return rtnMap
 }
