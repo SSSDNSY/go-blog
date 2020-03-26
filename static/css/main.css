@@ -1,3 +1,10 @@
+html,body {
+    font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    color: #333;
+    background: #E9EAED;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
 .blog-footer {
     padding: 1.0rem 0;
     color: #999;
@@ -66,7 +73,10 @@ li > a:hover {
 ul > li >p{
     margin-bottom: 0rem;
 }
-
+.pagination{
+    display: inline-flex;
+    margin: 1rem 0rem 0rem;
+}
 .cards {
     position: relative;
     display: -ms-flexbox;
