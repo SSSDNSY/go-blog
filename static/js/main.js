@@ -65,7 +65,20 @@ function refreshData(data) {
     myRadarChart.hideLoading()
 }
 
+function refreshStatics(data){
+
+}
+
 function changeCard(p) {
     $(p).addClass("active").addClass("text-info").parent().siblings().children().removeClass("active").removeClass("text-info");
-    $("#card"+p.dataset["card"]).show().siblings("div").hide()
+    $("#card"+p.dataset["card"]).show().siblings("div.card").hide()
+    if(p.dataset["card"] ==2 ||p.dataset["card"]==3){
+        $("#post").hide()
+    }else {
+        $("#post").show()
+    }
+}
+
+function searchReward(param) {
+    console.log(param)
 }

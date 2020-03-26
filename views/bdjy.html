@@ -1,6 +1,7 @@
 {{template "header"}}
 <title>首页 - imiBLOG</title>
 <script src="../static/js/echarts.min.js"></script>
+<script src="../static/js/echartConfig.js"></script>
 <title>百度经验统计</title>
 </head>
 <body>
@@ -26,7 +27,7 @@
 
             <ul class="nav nav-tabs" style="border-bottom-width:0px;">
                 <li class="nav-item">
-                    <p class="nav-link active" data-card="1" onclick="changeCard(this)" >统计</p>
+                    <p class="nav-link active" data-card="1" onclick="changeCard(this)">统计</p>
                 </li>
                 <li class="nav-item">
                     <p class="nav-link" data-card="2" onclick="changeCard(this)">悬赏</p>
@@ -41,7 +42,6 @@
                     <div class="card-title">
                         <div class="form " action="void(0);">
                             <div class="form-group ">
-                                {{/*                                <label for="bduid" class="exampleInputName2">BDUID：</label>*/}}
                                 <div class="input-group ">
                                     <input name="UUID" type="text" id="uuidInput" class="form-control"
                                            onkeyup="onMyCookie(this)"
@@ -52,28 +52,52 @@
                         </div>
                     </div>
                     <div class="card-text">
-                        <div class="row">
-                            <div ondblclick="showMyTotal(this)" id="totalDiv" class="col-2 col-md-2">
-                                <h6>总浏览量</h6>
-                                <p>总投票</p>
-                                <p>总喜爱</p>
+                        <div id="statistics" style="width: 50rem;height:35rem;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cards" id="post">
+                <div class="card-body">
+                    <div class="card-title text-center">
+                        <h3>已发布</h3>
+                    </div>
+                    <div class="card-text">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">如何更新英伟达官方驱动</a>
+                                <a href="#" class="list-group-item list-group-item-success"> Pro 2020基础入门（1）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-secondary"> Pro 2020基础入门（2）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-info"> Pro 2020基础入门（3）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-warning"> Pro 2020基础入门（4）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-danger"> Pro 2020基础入门（5）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-primary"> Pro 2020基础入门（6）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-dark"> Pro 2020基础入门（7）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-light"> Pro 2020基础入门（8）视频动画教学 </a>
                             </div>
-                            <div class="col-10 col-md-10">
-                                <div id="main" style="width: 30rem;height:15rem;"></div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
 
             <div class="card" id="card2">
                 <div class="card-body">
-                    <div class="card-title">
-                        悬赏card-title
-                    </div>
                     <div class="card-text">
-                        card-text
+                        <div class="form-group ">
+                            <div class="input-group ">
+                                <input name="UUID" type="text" id="uuidInput" class="form-control"
+                                       onkeyup="searchReward(this)"
+                                       placeholder="搜索悬赏经验" value="">
+                            </div>
+                        </div>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">如何更新英伟达官方驱动</a>
+                                <a href="#" class="list-group-item list-group-item-success"> Pro 2020基础入门（1）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-secondary"> Pro 2020基础入门（2）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-info"> Pro 2020基础入门（3）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-warning"> Pro 2020基础入门（4）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-danger"> Pro 2020基础入门（5）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-primary"> Pro 2020基础入门（6）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-dark"> Pro 2020基础入门（7）视频动画教学 </a>
+                                <a href="#" class="list-group-item list-group-item-light"> Pro 2020基础入门（8）视频动画教学 </a>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -82,10 +106,21 @@
             <div class="card" id="card3">
                 <div class="card-body">
                     <div class="card-title">
-                        搜索card-title
+                        <div class="form " action="void(0);">
+                            <div class="form-group ">
+                                <div class="input-group ">
+                                    <input name="UUID" type="text" id="uuidInput" class="form-control"
+                                           onkeyup="onMyCookie(this)"
+                                           placeholder="个人经验关键词" value="{{ .lru.uuid}}">
+                                    <span class="btn btn-primary" onclick="onMyCookie($('#uuidInput'))">确认</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-text">
-                        搜索card-text
+                        <div style="width: 30rem;height: 35rem;">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,81 +134,14 @@
 <script type="text/javascript">
 
     // 基于准备好的dom，初始化echarts实例
-    var myChartDemo = echarts.init(document.getElementById('main'));
+    // var myChartDemo = echarts.init(document.getElementById('main'));
     var myRadarChart = echarts.init(document.getElementById('radar'));
+    var myStatistics = echarts.init(document.getElementById('statistics'));
 
     // 指定图表的配置项和数据
-    //柱状图
-    var o1 = {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: 'bar',
-            showBackground: true,
-            backgroundStyle: {
-                color: 'rgba(220, 220, 220, 0.8)'
-            }
-        }]
-    };
 
-    //仪表盘
-    o2 = {
-        tooltip: {
-            formatter: '{a} <br/>{b} : {c}%'
-        },
-        series: [
-            {
-                name: '经验回响度',
-                type: 'gauge',
-                detail: {formatter: '{value}%'},
-                data: [{value: 50}]
-            }
-        ]
-    };
-
-    //雷达图
-    o3 = {
-        tooltip: {},
-        legend: {
-            data: ['预算分配（Allocated Budget）']
-        },
-        radar: {
-            // shape: 'circle',
-            name: {
-                textStyle: {
-                    color: '#fff',
-                    backgroundColor: '#999',
-                    borderRadius: 3,
-                    padding: [1, 3]
-                }
-            },
-            indicator: [
-                {name: '优质', max: 10},
-                {name: '活跃', max: 10},
-                {name: '原创', max: 10},
-                {name: '互动', max: 10},
-                {name: '财富', max: 100000},
-                {name: '现金', max: 500}
-            ]
-        },
-        series: [{
-            type: 'radar',
-            // areaStyle: {normal: {}},
-            name: "经验详情",
-            data: [
-                {
-                    value: [1, 1, 1, 1, 1, 1],
-                },
-            ]
-        }]
-    };
-    myChartDemo.setOption(o1)
+    // myChartDemo.setOption(o1)
     myRadarChart.setOption(o3)
+    myStatistics.setOption(o4)
 
 </script>
