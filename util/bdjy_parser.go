@@ -20,6 +20,7 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 		log.Fatal("goquery.NewDocumentFromReader err :", err)
 		return bd, err
 	}
+
 	doc.Find("a.uname").Each(func(i int, s *goquery.Selection) {
 		bd.Uname = s.Text()
 	})
