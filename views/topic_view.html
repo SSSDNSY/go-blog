@@ -8,7 +8,7 @@
         <div class="card-body">
             <h4 class="card-title">{{.Topic.Title}} 附件：( <a
                         href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a>)</h4>
-            <p class="text-default">{{.Topic.Content}}</p>
+            <textarea id="editorView" class="text-default">{{.Topic.Content}}</textarea>
         </div>
     </div>
     <a href="/topic/edit?tid={{.Tid}}" class="btn btn-primary float-right">修改文章</a>
@@ -28,7 +28,7 @@
     {{range .Replies}}
         <div class="border border-primary rounded mt-4 mt-6">
             <h6> {{.Name}}</h6>
-            <div class="text-info">{{.Content}}</div>
+            <textarea class="text-info">{{.Content}}</textarea>
             {{if $isLogin}}
                 <a class="float-right text-danger" href="/reply/delete?tid={{$Tid}}&rid={{.Id}}">删除</a>
             {{end}}
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label for="">评论内容：</label>
-                <textarea name="content" id="" cols="30" rows="5" class="form-control"></textarea>
+                <textarea name="content" id="editorComment" cols="30" rows="5" class="form-control"></textarea>
             </div>
             <button type="submit" class="btn btn-primary ">评论</button>
         </form>
@@ -52,5 +52,19 @@
 </div>
 </body>
 {{template "footer"}}
+<script>
+    let editorView = new SimpleMDE({
+        element: document.getElementById("editorView"),
+        toolbar: ["bold", "strikethrough", "italic", "heading", "|", "code", "quote", "|",
+            "unordered-list", "ordered-list", "image", "table", "|", "preview",
+            {
+                name: "side-by-side",
+                className: "fa fa-columns  no-disable no-mobile",
+                title: "side-by-side",
+                action:SimpleMDE.toggleSideBySide
+
+            }, "fullscreen"],
+    });
+</script>
 </html>
 
