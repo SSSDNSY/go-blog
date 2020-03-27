@@ -24,4 +24,5 @@ func TestCache(t *testing.T) {
 	fmt.Println(c.GetVal("int"))
 	fmt.Printf("类型=%T ,值=%d\n", c.GetVal("int"), c.GetVal("int"))
 	fmt.Printf("类型=%T ,值=%+v\n", c.GetVal("map"), c.GetVal("map"))
+	fmt.Println("test contains ", c.Contain("in1t"))
 }

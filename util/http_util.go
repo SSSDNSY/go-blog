@@ -12,7 +12,7 @@ const referer = "https://jingyan.baidu.com/"
 /**
 构造百度请求，爬取所需数据
 */
-func Get(baiduId string) (string, error) {
+func GetPerson(baiduId string) (string, error) {
 	//构造请求
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", nucUrl, nil)

@@ -8,10 +8,13 @@ import (
 	"strings"
 )
 
+//缓存
+var CacheExp = GetIns()
+
 /**
 解析百度经验个人页面
 */
-func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
+func ParsePerson(htmlTxt string) (*models.BDParam, error) {
 
 	bd := &models.BDParam{}
 	otherMap := make(map[string]string)
@@ -20,7 +23,7 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 		log.Fatal("goquery.NewDocumentFromReader err :", err)
 		return bd, err
 	}
-
+	CacheExp.PutVal("personHtml", htmlTxt)
 	doc.Find("a.uname").Each(func(i int, s *goquery.Selection) {
 		bd.Uname = s.Text()
 	})
@@ -65,7 +68,7 @@ func ParseBDParam(htmlTxt string) (*models.BDParam, error) {
 }
 
 /**
-解析百度经验提交页面
+解析已发布的百度经验
 */
 func ParseExPublished(htmlTxt string, bdid string) map[string]string {
 	totalView := 0

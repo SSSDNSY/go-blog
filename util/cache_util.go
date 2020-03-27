@@ -21,7 +21,6 @@ func GetIns() *CachMap {
 	return CachMap
 }
 func (c *CachMap) Size() int {
-
 	if c.Cache != nil {
 		return len(c.Cache)
 	} else {
