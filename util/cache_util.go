@@ -37,6 +37,18 @@ func (c *CachMap) Contain(key string) bool {
 	}
 }
 
+func (c *CachMap) Remove(key string) bool {
+	if c.Contain(key) {
+		delete(c.Cache, key)
+		return true
+	}
+	return false
+
+}
+func (c *CachMap) RemoveAll(key string) {
+	c.Cache = make(map[string]interface{}, 1000)
+}
+
 func (c *CachMap) Empty() bool {
 	if len(c.Cache) > 0 {
 		return false
@@ -45,7 +57,7 @@ func (c *CachMap) Empty() bool {
 	}
 }
 
-func (c *CachMap) GetVal(key string) interface{} {
+func (c *CachMap) Get(key string) interface{} {
 	val, ok := c.Cache[key]
 	if ok {
 		return val
@@ -54,7 +66,7 @@ func (c *CachMap) GetVal(key string) interface{} {
 	}
 }
 
-func (c *CachMap) PutVal(key string, val interface{}) interface{} {
+func (c *CachMap) Put(key string, val interface{}) interface{} {
 	if len(strings.TrimSpace(key)) == 0 {
 		return false
 	} else {

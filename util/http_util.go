@@ -44,7 +44,7 @@ func GetPerson(baiduId string) (string, error) {
 	return string(body), err
 }
 
-func GetExpNum(baiduId string, pn string) (htmlStr string) {
+func GetPostExp(baiduId string, pn string) (htmlStr string) {
 	url := "https://jingyan.baidu.com/user/nucpage/content?tab=exp&expType=published&pn=" + pn
 	method := "GET"
 
