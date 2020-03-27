@@ -73,7 +73,7 @@ function doPage(w, t) {
             $("#currentPage").val(idx)
             for (let [ii, expMap] of Object.entries(statics)) {
                 for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && ff1++ <= size * idx && ff1 >= size * (idx - 1)) {
+                    if (tm.hasOwnProperty("et") && ff1++ <size * idx && ff1 >size * (idx - 1)) {
                         ul.append(generateATag('#', ff1 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                     }
                 }
@@ -87,7 +87,7 @@ function doPage(w, t) {
             let ff2 = 0;
             for (let [ii, expMap] of Object.entries(statics)) {
                 for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && ff2++ <= size * idy && ff2 >= size * (idy - 1)) {
+                    if (tm.hasOwnProperty("et") && ff2++ < size * idy && ff2 > size * (idy - 1)) {
                         ul.append(generateATag('#', ff2 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                     }
                 }
@@ -96,14 +96,15 @@ function doPage(w, t) {
             break;
         case 'goto':
             if (event.keyCode === 13) {
-                $("#postExps").empty()
                 // if ( typeof cp.val() != "number")break; TODO 判断字符串是否是数字
                 let idz = Number(cp.val());
-                ff3 = 0;
+                if(idz<1 || idz> Object.entries(statics).length-1 )break
+                let ff3 = 0;
+                $("#postExps").empty()
                 for (let [ii, expMap] of Object.entries(statics)) {
                     for (let [jj, tm] of Object.entries(expMap)) {
-                        if (tm.hasOwnProperty("et") && ffi++ <= size) {
-                            ul.append(generateATag('#', ffi % 2 == 0 ? 'primary' : 'light', tm["et"]))
+                        if (tm.hasOwnProperty("et") && ff3++ < size*idz && ff3>size * (idz - 1)) {
+                            ul.append(generateATag('#', ff3 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                         }
                     }
                 }
