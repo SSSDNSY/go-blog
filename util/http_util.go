@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/gpmgo/gopm/modules/log"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func Get(baiduId string) (string, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", nucUrl, nil)
 	if err != nil {
-		log.Error("httpUtil err : ", err)
+		log.Fatal("httpUtil err : ", err)
 		return "", err
 	}
 
@@ -30,14 +30,14 @@ func Get(baiduId string) (string, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Error("httpUtil err : ", err)
+		log.Fatal("httpUtil err : ", err)
 		return "", err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Error("httpUtil err : ", err)
+		log.Fatal("httpUtil err : ", err)
 		return "", err
 	}
 	//fmt.Println(string(body))
@@ -52,7 +52,7 @@ func GetExpNum(baiduId string, pn string) (htmlStr string) {
 	req, err := http.NewRequest(method, url, nil)
 
 	if err != nil {
-		log.Error("", err)
+		log.Fatal("", err)
 		return ""
 	}
 	req.Header.Add("Host", " jingyan.baidu.com")
@@ -70,13 +70,13 @@ func GetExpNum(baiduId string, pn string) (htmlStr string) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		log.Error(" client.Do(req) err : ", err)
+		log.Fatal(" client.Do(req) err : ", err)
 		return ""
 	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Error("ioutil.ReadAll err : ", err)
+		log.Fatal("ioutil.ReadAll err : ", err)
 		return ""
 	}
 	//fmt.Println(string(body))
