@@ -1,0 +1,73 @@
+set GO111MODULE=
+set GOARCH=amd64
+set GOBIN=
+set GOCACHE=C:\Users\imi\AppData\Local\go-build
+set GOENV=C:\Users\imi\AppData\Roaming\go\env
+set GOEXE=.exe
+set GOFLAGS=
+set GOHOSTARCH=amd64
+set GOHOSTOS=windows
+set GONOPROXY=
+set GONOSUMDB=
+set GOOS=windows
+set GOPATH=W:\code\goprj;C:\Users\imi\go;
+set GOPRIVATE=
+set GOPROXY=https://goproxy.cn,direct
+set GOROOT=D:\Go
+set GOSUMDB=sum.golang.org
+set GOTMPDIR=
+set GOTOOLDIR=D:\Go\pkg\tool\windows_amd64
+set GCCGO=gccgo
+set AR=ar
+set CC=gcc
+set CXX=g++
+set CGO_ENABLED=1
+set GOMOD=
+set CGO_CFLAGS=-g -O2
+set CGO_CPPFLAGS=
+set CGO_CXXFLAGS=-g -O2
+set CGO_FFLAGS=-g -O2
+set CGO_LDFLAGS=-g -O2
+set PKG_CONFIG=pkg-config
+set GOGCCFLAGS=-m64 -mthreads -fmessage-length=0 -fdebug-prefix-map=D:\trmp\Temp\go-build555469638=/tmp/go-build -gno-record-gcc-switches
+
+
+
+
+
+
+
+
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build test.go
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build test.go
+Linux下编译Mac, Windows平台的64位可执行程序：
+
+
+CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build test.go
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build test.go
+Windows下编译Mac, Linux平台的64位可执行程序：
+
+
+SET CGO_ENABLED=0
+SET GOOS=darwin3
+SET GOARCH=amd64
+go build test.go
+
+
+SET CGO_ENABLED=0
+SET GOOS=linux
+SET GOARCH=amd64
+go build test.go
+
+
+
+GOOS：目标可执行程序运行操作系统，支持 darwin，freebsd，linux，windows
+GOARCH：目标可执行程序操作系统构架，包括 386，amd64，arm
+
+
+Golang version 1.5以前版本在首次交叉编译时还需要配置交叉编译环境：
+
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ./make.bash
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ./make.bash
