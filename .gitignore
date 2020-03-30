@@ -1,3 +1,8 @@
 ./attachment/*
 ./data
 ./tests
+
+*.exe
+.gitignore
+.idea
+.git
