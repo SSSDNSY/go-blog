@@ -13,8 +13,12 @@
                     <div class="card-body mt-2 mb-2">
                         <a href="/topic/view/{{.Id}}">
                             <h2 class="card-title">{{.Title}} </h2>
-                            <h6 class="text-muted"> 文章发表于 {{.Updated}}，共有{{.Views}}次浏览，{{.ReplyCount}}个评论</h6>
-                            <p  id="hv" class="card-text mb-auto ">
+                            <h6 class="text-muted">
+                                <span class="oi oi-timer"> {{ date .Updated "Y-m-d H:i:s"}}</span>
+                                <span class="oi oi-video ml-3">{{.Views}}</span>
+                                <span class="oi oi-comment-square ml-3">{{.ReplyCount}}</span>
+                            </h6>
+                            <p id="hv" class="card-text mb-auto ">
                                 {{.Content}}
                             </p>
                         </a>

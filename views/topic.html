@@ -22,11 +22,11 @@
             <tr>
                 <th>{{.Id}}</th>
                 <th>{{.Title}}</th>
-                <th>{{.Created}}</th>
-                <th>{{.Updated}}</th>
+                <th>{{date .Created "Y-m-d H:i:s"}}</th>
+                <th>{{date .Updated "Y-m-d H:i:s"}}</th>
                 <th>{{.Views}}</th>
                 <th>{{.ReplyCount}}</th>
-                <th>{{.ReplyTime}}</th>
+                <th>{{date .ReplyTime "Y-m-d H:i:s"}}</th>
                 <th>
                     <a href="/topic/edit/?tid={{.Id}}">编辑</a>
                     <a href="/topic/delete/{{.Id}}">删除</a>

@@ -2,15 +2,15 @@ package test
 
 import (
 	"fmt"
-	"github.com/gpmgo/gopm/modules/log"
+	"go-blog/util"
 	"strings"
 	"testing"
 	"time"
 )
 
 func TestGolang(t *testing.T) {
-	log.Error(strings.Split("abc", "a")[1])
-	log.Error(strings.Split("2019-12-21 10:28:16.1517132 +0000 UTC", ".")[0])
+	fmt.Println(strings.Split("abc", "a")[1])
+	fmt.Println(strings.Split("2019-12-21 10:28:16.1517132 +0000 UTC", ".")[0])
 }
 
 func TestStrings(t *testing.T) {
@@ -18,7 +18,13 @@ func TestStrings(t *testing.T) {
 }
 
 func TestTime(t *testing.T) {
-	time.Now().Local()
+	t1 :=time.Now().Local()
+	fmt.Println(t1)
+	fmt.Println(t1.Hour())
+	fmt.Println(t1.Minute())
+	fmt.Println(t1.Second())
+
+	fmt.Println("格式化日期"+util.PaserDateTime(t1))
 }
 
 func TestSefFunc(t *testing.T) {
