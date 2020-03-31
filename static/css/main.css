@@ -4,8 +4,11 @@ html,body {
     /*background: #f9f9f9;*/
     line-height: 1.5;
     overflow-x: hidden;
+    height: 100%;
 }
-
+.container{
+    min-height: 75%;
+}
 .blog-footer {
     padding: 1.0rem 0;
     color: #555;
