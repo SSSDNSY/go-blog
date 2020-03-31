@@ -10,8 +10,8 @@
         <thead>
         <th>#</th>
         <th>文件名称</th>
-        <th>创建时间</th>
         <th>文件大小</th>
+        <th>创建时间</th>
         <th>操 作</th>
         </thead>
         <tbody>
@@ -20,7 +20,7 @@
                 <th>{{.Id}}</th>
                 <th>{{.Name}}</th>
                 <th>{{.Size}}</th>
-                <th>{{.Time}}</th>
+                <th>{{date .Time "Y-m-d H:i:s"}}</th>
                 <th>
                     <a href="/attachment/{{.Name}}">下载</a>
                     <a href="/attachment/delete/{{.Id}}">删除</a>
