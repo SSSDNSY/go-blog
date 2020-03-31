@@ -15,12 +15,14 @@ func init() {
 
 func main() {
 
-	//i18n.SetMessage(lang, "conf/"+"locale_"+lang+".ini");
 	time.Local = time.FixedZone("CST", 3600*8)
-	//timelocal = time.LoadLocation("Asia/Chongqing") //方法2
-	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>", time.Now().Local())
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>博客服务启动", time.Now().Local())
 	orm.Debug = true
+	//beego.EnableAdmin = true
+	//beego.AdminHttpAddr = "localhost"
+	//beego.AdminHttpPort = 8088
 	orm.RunSyncdb("default", false, true)
 	routers.Init()
 	beego.Run()
+
 }
