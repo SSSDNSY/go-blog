@@ -109,6 +109,12 @@ func ParseExPublished(bdid string) map[string]map[string]map[string]string {
 	return result
 }
 
+func ParRewardExp(htmlTxt string) {
+	htmlTxt = GetReward("0")
+	//doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
+
+}
+
 /**
 * 得到一页的统计值
  */

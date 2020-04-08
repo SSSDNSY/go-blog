@@ -17,6 +17,7 @@ function onMyCookie(e) {
         return
     }
     if (event.keyCode === 13 || event.type === "click") {
+        myStatistics.showLoading()
         myRadarChart.showLoading()
         $.post("/bdjy/person", {
             "uuid": $.trim($(e).val())
@@ -34,6 +35,7 @@ function showStatic(e) {
     }, function (data) {
         console.log(data)
         window.localStorage.setItem("BD_TOTAL_DATA", JSON.stringify(data))
+        myStatistics.hideLoading()
         refreshStatics(data)
     })
 }
@@ -70,10 +72,9 @@ function doPage(w, t) {
             if (idx < 1) break;
             $("#postExps").empty()
             let ff1 = 0;
-            $("#currentPage").val(idx)
             for (let [ii, expMap] of Object.entries(statics)) {
                 for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && ff1++ <size * idx && ff1 >size * (idx - 1)) {
+                    if (tm.hasOwnProperty("et") && (size * (idx - 1)) <= ff1++ && ff1 <= (idx * size)) {
                         ul.append(generateATag('#', ff1 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                     }
                 }
@@ -82,12 +83,12 @@ function doPage(w, t) {
             break;
         case 'next':
             let idy = Number(cp.val()) + 1;
-            if (Object.entries(statics).length-1 < idy) break
+            if (2*Object.entries(statics).length < idy) break
             $("#postExps").empty()
             let ff2 = 0;
             for (let [ii, expMap] of Object.entries(statics)) {
                 for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && ff2++ < size * idy && ff2 > size * (idy - 1)) {
+                    if (tm.hasOwnProperty("et") && (size * (idy - 1)) <= ff2++ && ff2 <= (idy * size)) {
                         ul.append(generateATag('#', ff2 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                     }
                 }
@@ -98,12 +99,12 @@ function doPage(w, t) {
             if (event.keyCode === 13) {
                 // if ( typeof cp.val() != "number")break; TODO 判断字符串是否是数字
                 let idz = Number(cp.val());
-                if(idz<1 || idz> Object.entries(statics).length-1 )break
+                if (idz < 1 || idz > 2 * Object.entries(statics).length) break
                 let ff3 = 0;
                 $("#postExps").empty()
                 for (let [ii, expMap] of Object.entries(statics)) {
                     for (let [jj, tm] of Object.entries(expMap)) {
-                        if (tm.hasOwnProperty("et") && ff3++ < size*idz && ff3>size * (idz - 1)) {
+                        if (tm.hasOwnProperty("et") && ff3++ <= size * idz && ff3 >= size * (idz - 1)) {
                             ul.append(generateATag('#', ff3 % 2 == 0 ? 'primary' : 'light', tm["et"]))
                         }
                     }
@@ -151,12 +152,14 @@ function caleStaticData(data) {
 }
 
 function refreshShart(data) {
+
     if (data && o4 && data.length > 0) {
         o4.series.forEach(function (val, idx, arr) {
             // console.log(val + " " + idx + " " + arr[idx].data);
             arr[idx].data = [data[idx]]
         })
         myStatistics.setOption(o4)
+        myStatistics.hideLoading()
     }
 }
 

@@ -38,6 +38,10 @@ func (this *BdjyController) Static() {
 	this.ServeJSON()
 }
 
+func (this *BdjyController) Reward() {
+
+}
+
 func getUUID(uuid string) string {
 	if len(cacheArr) > 9999 {
 		log.Fatal("uuid缓存数组超过极限值 %v =%d", cacheArr, len(cacheArr))

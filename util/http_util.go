@@ -82,3 +82,31 @@ func GetPostExp(baiduId string, pn string) (htmlStr string) {
 	//fmt.Println(string(body))
 	return string(body)
 }
+
+func GetReward(pn string) (htmlStr string) {
+	url := "https://jingyan.baidu.com/user/nucpage/content?tab=exp&expType=published&pn=" + pn
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		log.Fatal("", err)
+		return ""
+	}
+	req.Header.Add("Accept-Language", " zh-CN,zh;q=0.9")
+	req.Header.Add("Connection", " keep-alive")
+	req.Header.Add("Cache-Control", "max-age=0")
+	res, err := client.Do(req)
+	if err != nil {
+		log.Fatal(" client.Do(req) err : ", err)
+		return ""
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal("ioutil.ReadAll err : ", err)
+		return ""
+	}
+	//fmt.Println(string(body))
+	return string(body)
+
+}
