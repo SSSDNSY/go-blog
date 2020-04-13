@@ -1,5 +1,15 @@
+/**
+ *@Description:
+ *@Author: imi
+ *@date: 2020/4/10
+ */
+
+const PAGE_SIZE = 10
+
+
 $(function () {
     //经验页面加载完成
+    window.localStorage.setItem('CURRENT_PAGE', '1')
     let param = window.localStorage.getItem("BD_PERSON_DATA")
     let statics = window.localStorage.getItem("BD_TOTAL_DATA")
     if (param && window.location.pathname == "/bdjy") {
@@ -62,67 +72,112 @@ function refreshStatics(data) {
 }
 
 function doPage(w, t) {
-    let statics = JSON.parse(window.localStorage.getItem("BD_TOTAL_DATA"))
-    let size = 10
+
+    var curPage = window.localStorage.getItem('CURRENT_PAGE');
     var cp = $("#currentPage")
-    var ul = $("#postExps")
-    switch (w) {
-        case 'pre':
-            let idx = Number(cp.val()) - 1;
-            if (idx < 1) break;
-            $("#postExps").empty()
-            let ff1 = 0;
-            for (let [ii, expMap] of Object.entries(statics)) {
-                for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && (size * (idx - 1)) <= ff1++ && ff1 <= (idx * size)) {
-                        ul.append(generateATag('#', ff1 % 2 == 0 ? 'primary' : 'light', tm["et"]))
-                    }
-                }
-            }
-            cp.val(idx)
-            break;
-        case 'next':
-            let idy = Number(cp.val()) + 1;
-            if (2*Object.entries(statics).length < idy) break
-            $("#postExps").empty()
-            let ff2 = 0;
-            for (let [ii, expMap] of Object.entries(statics)) {
-                for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && (size * (idy - 1)) <= ff2++ && ff2 <= (idy * size)) {
-                        ul.append(generateATag('#', ff2 % 2 == 0 ? 'primary' : 'light', tm["et"]))
-                    }
-                }
-            }
-            cp.val(idy)
-            break;
-        case 'goto':
-            if (event.keyCode === 13) {
-                // if ( typeof cp.val() != "number")break; TODO 判断字符串是否是数字
-                let idz = Number(cp.val());
-                if (idz < 1 || idz > 2 * Object.entries(statics).length) break
-                let ff3 = 0;
-                $("#postExps").empty()
-                for (let [ii, expMap] of Object.entries(statics)) {
-                    for (let [jj, tm] of Object.entries(expMap)) {
-                        if (tm.hasOwnProperty("et") && ff3++ <= size * idz && ff3 >= size * (idz - 1)) {
-                            ul.append(generateATag('#', ff3 % 2 == 0 ? 'primary' : 'light', tm["et"]))
+    var postExps = $("#postExps")
+    var rewardList = $("#rewardList")
+    switch (curPage) {
+        case '1':
+            let statics = JSON.parse(window.localStorage.getItem("BD_TOTAL_DATA"))
+            switch (w) {
+                case 'pre':
+                    let idx = Number(cp.val()) - 1;
+                    if (idx < 1) break;
+                    $("#postExps").empty()
+                    let ff1 = 0;
+                    for (let [ii, expMap] of Object.entries(statics)) {
+                        for (let [jj, tm] of Object.entries(expMap)) {
+                            if (tm.hasOwnProperty("et") && (PAGE_SIZE * (idx - 1)) <= ff1++ && ff1 <= (idx * PAGE_SIZE)) {
+                                postExps.append(generateATag('#', ff1 % 2 == 0 ? 'primary' : 'light', tm["et"]))
+                            }
                         }
                     }
-                }
+                    cp.val(idx)
+                    break;
+                case 'next':
+                    let idy = Number(cp.val()) + 1;
+                    if (2 * Object.entries(statics).length < idy) break
+                    $("#postExps").empty()
+                    let ff2 = 0;
+                    for (let [ii, expMap] of Object.entries(statics)) {
+                        for (let [jj, tm] of Object.entries(expMap)) {
+                            if (tm.hasOwnProperty("et") && (PAGE_SIZE * (idy - 1)) <= ff2++ && ff2 <= (idy * PAGE_SIZE)) {
+                                postExps.append(generateATag('#', ff2 % 2 == 0 ? 'primary' : 'light', tm["et"]))
+                            }
+                        }
+                    }
+                    cp.val(idy)
+                    break;
+                case 'goto':
+                    if (event.keyCode === 13) {
+                        // if ( typeof cp.val() != "number")break; TODO 判断字符串是否是数字
+                        let idz = Number(cp.val());
+                        if (idz < 1 || idz > 2 * Object.entries(statics).length) break
+                        let ff3 = 0;
+                        $("#postExps").empty()
+                        for (let [ii, expMap] of Object.entries(statics)) {
+                            for (let [jj, tm] of Object.entries(expMap)) {
+                                if (tm.hasOwnProperty("et") && ff3++ < PAGE_SIZE * idz && ff3 >= PAGE_SIZE * (idz - 1)) {
+                                    postExps.append(generateATag('#', ff3 % 2 == 0 ? 'primary' : 'light', tm["et"]))
+                                }
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    let ffi = 1;
+                    $("#currentPage").val("1")
+                    for (let [ii, expMap] of Object.entries(statics)) {
+                        for (let [jj, tm] of Object.entries(expMap)) {
+                            if (tm.hasOwnProperty("et") && ffi++ <= PAGE_SIZE) {
+                                postExps.append(generateATag('#', ffi % 2 == 0 ? 'primary' : 'light', tm["et"]))
+                            }
+                        }
+                    }
+                    break;
             }
             break;
-        default:
-            let ffi = 1;
-            $("#currentPage").val("1")
-            for (let [ii, expMap] of Object.entries(statics)) {
-                for (let [jj, tm] of Object.entries(expMap)) {
-                    if (tm.hasOwnProperty("et") && ffi++ <= size) {
-                        ul.append(generateATag('#', ffi % 2 == 0 ? 'primary' : 'light', tm["et"]))
+        case '2':
+            let reward = JSON.parse(window.localStorage.getItem("BD_REWARD_DATA"))
+
+            switch (w) {
+                case 'pre':
+                    let idx = Number(cp.val()) - 1;
+                    if (idx < 1) break;
+                    rewardList.empty();
+                    for (let p = 0; (idx - 1) * PAGE_SIZE <= p && p >= PAGE_SIZE * idx; p++) {
+                        rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
                     }
-                }
+                    cp.val(idx)
+                    break;
+                case 'next':
+                    let idy = Number(cp.val()) - 1;
+                    if (idy > reward.length % PAGE_SIZE) break;
+                    rewardList.empty();
+                    for (let p = 0; idy * PAGE_SIZE < p && (idy + 1) * PAGE_SIZE; p++) {
+                        rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
+                    }
+                    cp.val(idy)
+                    break;
+                case 'goto':
+                    if (event.keyCode === 13) {
+                        let idg = Number(cp.val())
+                        if (idg < 1 || idg > reward.length % PAGE_SIZE) break;
+                        rewardList.empty();
+                        for (let p = 0; idg * PAGE_SIZE < p && (idg + 1) * PAGE_SIZE; p++) {
+                            rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
+                        }
+                        cp.val(idg)
+                    }
+                    break;
+                default:
+                    break;
             }
             break;
     }
+
+
 }
 
 function generateATag(a, b, c) {
@@ -167,12 +222,34 @@ function refreshShart(data) {
 function changeCard(p) {
     $(p).addClass("active").addClass("text-info").parent().siblings().children().removeClass("active").removeClass("text-info");
     $("#card" + p.dataset["card"]).show().siblings("div.card").hide()
-    if (p.dataset["card"] == 2 || p.dataset["card"] == 3) {
+    if (p.dataset["card"] == 2) {
         $("#post").hide()
+        showReward();
+        window.localStorage.setItem('CURRENT_PAGE', '2')
+
+    } else if (p.dataset["card"] == 3) {
+        $("#post").hide()
+        window.localStorage.setItem('CURRENT_PAGE', '3')
+
     } else {
+        window.localStorage.setItem('CURRENT_PAGE', '1')
         $("#post").show()
     }
 }
+
+function showReward() {
+    $.post("/bdjy/reward", {}, function (data) {
+        window.localStorage.setItem("BD_REWARD_DATA", JSON.stringify(data))
+        for (let i = 0; i < PAGE_SIZE; i++) {
+            $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', data[i]))
+        }
+    });
+}
+
+function doRewardPage() {
+
+}
+
 
 function searchReward(param) {
     console.log(param)

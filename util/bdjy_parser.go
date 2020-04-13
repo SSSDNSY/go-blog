@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"go-blog/models"
 	"log"
@@ -109,10 +110,37 @@ func ParseExPublished(bdid string) map[string]map[string]map[string]string {
 	return result
 }
 
-func ParRewardExp(htmlTxt string) {
-	htmlTxt = GetReward("0")
-	//doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
+func ParRewardExp() map[int]string {
+	htmlTxt := GetReward("0")
 
+	var totalPn int
+	var index int
+	index = 0
+	maps := make(map[int]string)
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
+	if err != nil {
+		log.Fatal(" ParRewardExp goquery .NewDocumentFromReader err :", err)
+	}
+	doc.Find("div.li-par").Each(func(i int, s *goquery.Selection) {
+		maps[index] = s.Text()
+		index++
+	})
+
+	str, ok := doc.Find("a.padding8").Last().Attr("href")
+	if ok {
+		totalPn, _ = strconv.Atoi(strings.Split(str, "=")[8])
+
+	}
+	for idx := 15; idx < totalPn; idx += 15 {
+		doc, _ := goquery.NewDocumentFromReader(strings.NewReader(GetReward(strconv.Itoa(idx))))
+		doc.Find("div.li-par").Each(func(i int, s *goquery.Selection) {
+			maps[index] = s.Text()
+			index++
+		})
+	}
+
+	fmt.Println(maps)
+	return maps
 }
 
 /**

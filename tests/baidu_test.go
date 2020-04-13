@@ -32,6 +32,11 @@ func TestGetExpNum(t *testing.T) {
 	util.ParseExPublished(BDID)
 }
 
+//已悬赏经验测试
+func TestRewardExpNum(t *testing.T) {
+	util.ParRewardExp()
+}
+
 func TestGoQuery(t *testing.T) {
 	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(TEST_HTML_TXT))
 	var view = 0

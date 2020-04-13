@@ -39,7 +39,8 @@ func (this *BdjyController) Static() {
 }
 
 func (this *BdjyController) Reward() {
-
+	this.Data["json"] = util.ParRewardExp()
+	this.ServeJSON()
 }
 
 func getUUID(uuid string) string {

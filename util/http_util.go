@@ -84,7 +84,7 @@ func GetPostExp(baiduId string, pn string) (htmlStr string) {
 }
 
 func GetReward(pn string) (htmlStr string) {
-	url := "https://jingyan.baidu.com/user/nucpage/content?tab=exp&expType=published&pn=" + pn
+	url := "https://jingyan.baidu.com/patch?tab=highquality&pn=" + pn
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -97,7 +97,7 @@ func GetReward(pn string) (htmlStr string) {
 	req.Header.Add("Cache-Control", "max-age=0")
 	res, err := client.Do(req)
 	if err != nil {
-		log.Fatal(" client.Do(req) err : ", err)
+		log.Fatal("GetReward client.Do(req) err : ", err)
 		return ""
 	}
 	defer res.Body.Close()
