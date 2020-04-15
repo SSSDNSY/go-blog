@@ -143,32 +143,32 @@ function doPage(w, t) {
 
             switch (w) {
                 case 'pre':
-                    let idx = Number(cp.val()) - 1;
+                    let idx = Number($("#card2  #currentPage").val()) - 1;
                     if (idx < 1) break;
                     rewardList.empty();
-                    for (let p = 0; (idx - 1) * PAGE_SIZE <= p && p >= PAGE_SIZE * idx; p++) {
+                    for (let p = (idx - 1) * PAGE_SIZE; (idx - 1) * PAGE_SIZE <= p && p < PAGE_SIZE * idx; p++) {
                         rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
                     }
-                    cp.val(idx)
+                    $("#card2  #currentPage").val(idx)
                     break;
                 case 'next':
-                    let idy = Number(cp.val()) - 1;
-                    if (idy > reward.length % PAGE_SIZE) break;
+                    let idy = Number($("#card2  #currentPage").val()) + 1;
+                    if (idy >Math.floor( Object.entries(reward).length / PAGE_SIZE)) break;
                     rewardList.empty();
-                    for (let p = 0; idy * PAGE_SIZE < p && (idy + 1) * PAGE_SIZE; p++) {
+                    for (let p = idy * PAGE_SIZE ; idy * PAGE_SIZE <= p && p< (idy + 1) * PAGE_SIZE; p++) {
                         rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
                     }
-                    cp.val(idy)
+                    $("#card2  #currentPage").val(idy)
                     break;
                 case 'goto':
                     if (event.keyCode === 13) {
-                        let idg = Number(cp.val())
-                        if (idg < 1 || idg > reward.length % PAGE_SIZE) break;
+                        let idg = Number($("#card2  #currentPage").val())
+                        if (idg < 1 || idg > Math.floor(Object.entries(reward).length / PAGE_SIZE)) break;
                         rewardList.empty();
-                        for (let p = 0; idg * PAGE_SIZE < p && (idg + 1) * PAGE_SIZE; p++) {
+                        for (let p = idg * PAGE_SIZE; idg * PAGE_SIZE <= p && p < (idg + 1) * PAGE_SIZE ; p++) {
                             rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
                         }
-                        cp.val(idg)
+                        $("#card2  #currentPage").val(idg)
                     }
                     break;
                 default:
@@ -238,12 +238,23 @@ function changeCard(p) {
 }
 
 function showReward() {
-    $.post("/bdjy/reward", {}, function (data) {
-        window.localStorage.setItem("BD_REWARD_DATA", JSON.stringify(data))
+
+    let rewardData = JSON.parse(window.localStorage.getItem('BD_REWARD_DATA'));
+    if (rewardData && rewardData[0].length > 0) {
         for (let i = 0; i < PAGE_SIZE; i++) {
-            $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', data[i]))
+            $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', rewardData[i]))
         }
-    });
+    } else {
+        $("#rewardList").append(generateATag('#', 'warning', "悬赏数据获取中..."))
+        $.post("/bdjy/reward", {}, function (data) {
+            $("#rewardList").empty()
+            window.localStorage.setItem("BD_REWARD_DATA", JSON.stringify(data))
+            for (let i = 0; i < PAGE_SIZE; i++) {
+                $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', data[i]))
+            }
+        });
+    }
+
 }
 
 function doRewardPage() {

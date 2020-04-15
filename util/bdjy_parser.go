@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"go-blog/models"
 	"log"
@@ -139,7 +138,7 @@ func ParRewardExp() map[int]string {
 		})
 	}
 
-	fmt.Println(maps)
+	//fmt.Println(maps)
 	return maps
 }
 
