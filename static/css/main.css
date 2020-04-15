@@ -1,13 +1,17 @@
 html,body {
     font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif;
-    color: #333;
-    background: #E9EAED;
+    color: #233;
+    /*background: #f9f9f9;*/
     line-height: 1.5;
     overflow-x: hidden;
+    height: 100%;
+}
+.container{
+    min-height: 75%;
 }
 .blog-footer {
     padding: 1.0rem 0;
-    color: #999;
+    color: #555;
     text-align: center;
     background-color: #f9f9f9;
     border-top: .05rem solid #e5e5e5;
@@ -58,11 +62,13 @@ li > a:hover {
 .mn-100 {
     min-height: max-content;
 }
-.cen{
+
+.cen {
     text-align: center;
     margin: 0 auto;
     padding: 0 auto;
 }
+
 .bd-img {
     height: 12rem;
     width: 12rem;
@@ -70,13 +76,16 @@ li > a:hover {
     mso-border-shadow: yes;
     box-shadow: #3c3c3c;
 }
-ul > li >p{
+
+ul > li > p {
     margin-bottom: 0rem;
 }
-.pagination{
+
+.pagination {
     display: inline-flex;
     margin: 1rem 0rem 0rem;
 }
+
 .cards {
     position: relative;
     display: -ms-flexbox;
@@ -87,7 +96,18 @@ ul > li >p{
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-top:none;
-    border-radius: 0 0 .25rem .25rem ;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-top: none;
+    border-radius: 0 0 .25rem .25rem;
+}
+
+.page-input {
+    width: 2.5rem;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-left: none;
+    border-right: none;
+}
+.ml-3{
+    margin-left: 3rem;
 }

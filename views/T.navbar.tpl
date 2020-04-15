@@ -3,6 +3,7 @@
         <a class="navbar-brand" href="/">我的博客</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-1"
                 type="button">
+            <span class="oi oi-menu"></span>
             <span class="icon-bar navbar-left"></span>
             <span class="icon-bar navbar-left"></span>
             <span class="icon-bar navbar-left"></span>

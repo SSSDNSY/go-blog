@@ -12,7 +12,7 @@ const referer = "https://jingyan.baidu.com/"
 /**
 构造百度请求，爬取所需数据
 */
-func Get(baiduId string) (string, error) {
+func GetPerson(baiduId string) (string, error) {
 	//构造请求
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", nucUrl, nil)
@@ -44,7 +44,7 @@ func Get(baiduId string) (string, error) {
 	return string(body), err
 }
 
-func GetExpNum(baiduId string, pn string) (htmlStr string) {
+func GetPostExp(baiduId string, pn string) (htmlStr string) {
 	url := "https://jingyan.baidu.com/user/nucpage/content?tab=exp&expType=published&pn=" + pn
 	method := "GET"
 
@@ -81,4 +81,32 @@ func GetExpNum(baiduId string, pn string) (htmlStr string) {
 	}
 	//fmt.Println(string(body))
 	return string(body)
+}
+
+func GetReward(pn string) (htmlStr string) {
+	url := "https://jingyan.baidu.com/patch?tab=highquality&pn=" + pn
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		log.Fatal("", err)
+		return ""
+	}
+	req.Header.Add("Accept-Language", " zh-CN,zh;q=0.9")
+	req.Header.Add("Connection", " keep-alive")
+	req.Header.Add("Cache-Control", "max-age=0")
+	res, err := client.Do(req)
+	if err != nil {
+		log.Fatal("GetReward client.Do(req) err : ", err)
+		return ""
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal("ioutil.ReadAll err : ", err)
+		return ""
+	}
+	//fmt.Println(string(body))
+	return string(body)
+
 }

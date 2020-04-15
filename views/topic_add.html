@@ -20,7 +20,7 @@
         </div>
         <div class="form-group mt-2">
             <label for="">文章内容：</label>
-            <textarea name="content" id="" cols="30" rows="15" class="form-control"></textarea>
+            <textarea name="content" id="editorAdd" cols="30" rows="15" class="form-control"></textarea>
         </div>
         <button type="submit" class="btn btn-primary float-right">确认添加</button>
     </form>
@@ -28,6 +28,20 @@
 </body>
 {{template "footer"}}
 <script type="text/javascript">
+
+    let editorAdd = new SimpleMDE({
+        element: document.getElementById("editorAdd"),
+        toolbar: ["bold", "strikethrough", "italic", "heading", "|", "code", "quote", "|",
+            "unordered-list", "ordered-list", "image", "table", "|", "preview",
+            {
+                name: "side-by-side",
+                className: "fa fa-columns  no-disable no-mobile",
+                title: "side-by-side",
+                action:SimpleMDE.toggleSideBySide
+
+            }, "fullscreen"],
+    });
+
     $(function () {
         if ("file" == window.location.href.split('/')[window.location.href.split('/').length - 1]) {
             $("#h1t").text("上传文件")
