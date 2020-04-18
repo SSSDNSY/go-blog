@@ -77,9 +77,12 @@ function doPage(w, t) {
     var cp = $("#currentPage")
     var postExps = $("#postExps")
     var rewardList = $("#rewardList")
+
     switch (curPage) {
         case '1':
             let statics = JSON.parse(window.localStorage.getItem("BD_TOTAL_DATA"))
+            $("#totalPage").val("/   "+((2 * Object.entries(statics).length)-1));
+
             switch (w) {
                 case 'pre':
                     let idx = Number(cp.val()) - 1;
@@ -97,7 +100,7 @@ function doPage(w, t) {
                     break;
                 case 'next':
                     let idy = Number(cp.val()) + 1;
-                    if (2 * Object.entries(statics).length < idy) break
+                    if (2 * Object.entries(statics).length -1 < idy) break
                     $("#postExps").empty()
                     let ff2 = 0;
                     for (let [ii, expMap] of Object.entries(statics)) {
@@ -113,7 +116,7 @@ function doPage(w, t) {
                     if (event.keyCode === 13) {
                         // if ( typeof cp.val() != "number")break; TODO 判断字符串是否是数字
                         let idz = Number(cp.val());
-                        if (idz < 1 || idz > 2 * Object.entries(statics).length) break
+                        if (idz < 1 || idz > 2 * Object.entries(statics).length-1) break
                         let ff3 = 0;
                         $("#postExps").empty()
                         for (let [ii, expMap] of Object.entries(statics)) {
@@ -126,7 +129,7 @@ function doPage(w, t) {
                     }
                     break;
                 default:
-                    let ffi = 1;
+                    let ffi = 0;
                     $("#currentPage").val("1")
                     for (let [ii, expMap] of Object.entries(statics)) {
                         for (let [jj, tm] of Object.entries(expMap)) {
@@ -140,7 +143,7 @@ function doPage(w, t) {
             break;
         case '2':
             let reward = JSON.parse(window.localStorage.getItem("BD_REWARD_DATA"))
-
+            $("#card2  #totalPage").val("/   "+(Math.floor(Object.entries(reward).length / PAGE_SIZE)-1))
             switch (w) {
                 case 'pre':
                     let idx = Number($("#card2  #currentPage").val()) - 1;
@@ -153,7 +156,7 @@ function doPage(w, t) {
                     break;
                 case 'next':
                     let idy = Number($("#card2  #currentPage").val()) + 1;
-                    if (idy >Math.floor( Object.entries(reward).length / PAGE_SIZE)) break;
+                    if (idy >Math.floor( Object.entries(reward).length / PAGE_SIZE)-1) break;
                     rewardList.empty();
                     for (let p = idy * PAGE_SIZE ; idy * PAGE_SIZE <= p && p< (idy + 1) * PAGE_SIZE; p++) {
                         rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
@@ -163,7 +166,7 @@ function doPage(w, t) {
                 case 'goto':
                     if (event.keyCode === 13) {
                         let idg = Number($("#card2  #currentPage").val())
-                        if (idg < 1 || idg > Math.floor(Object.entries(reward).length / PAGE_SIZE)) break;
+                        if (idg < 1 || idg > Math.floor(Object.entries(reward).length / PAGE_SIZE)-1) break;
                         rewardList.empty();
                         for (let p = idg * PAGE_SIZE; idg * PAGE_SIZE <= p && p < (idg + 1) * PAGE_SIZE ; p++) {
                             rewardList.append(generateATag('#', p % 2 == 0 ? 'warning' : 'dark', reward[p]))
@@ -242,6 +245,7 @@ function showReward() {
     let rewardData = JSON.parse(window.localStorage.getItem('BD_REWARD_DATA'));
     if (rewardData && rewardData[0].length > 0) {
         for (let i = 0; i < PAGE_SIZE; i++) {
+            $("#rewardList").empty()
             $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', rewardData[i]))
         }
     } else {

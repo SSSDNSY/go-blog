@@ -1,9 +1,10 @@
 {{define "nav"}}
-<div class="container text-center">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link disabled"  onclick="doPage('pre',this)" >上页</a></li>
-        <input class="page-input" id="currentPage" value="1" onkeyup="doPage('goto',this)"/>
-        <li class="page-item"><a class="page-link"  onclick="doPage('next',this)">下页</a></li>
-    </ul>
-</div>
+    <div class="container text-center">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link disabled" onclick="doPage('pre',this)">上页</a></li>
+            <input class="page-input" id="currentPage" value="1" onkeyup="doPage('goto',this)"/>
+            <input class="page-input" style="width: 3.5em;" id="totalPage" disabled value="/   99">
+            <li class="page-item"><a class="page-link" onclick="doPage('next',this)">下页</a></li>
+        </ul>
+    </div>
 {{end}}
