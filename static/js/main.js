@@ -243,9 +243,9 @@ function changeCard(p) {
 function showReward() {
 
     let rewardData = JSON.parse(window.localStorage.getItem('BD_REWARD_DATA'));
-    if (rewardData && rewardData[0].length > 0) {
+    if (rewardData && rewardData[0]&& rewardData[0].length > 0) {
+        $("#rewardList").empty()
         for (let i = 0; i < PAGE_SIZE; i++) {
-            $("#rewardList").empty()
             $("#rewardList").append(generateATag('#', i % 2 == 0 ? 'warning' : 'dark', rewardData[i]))
         }
     } else {

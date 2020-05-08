@@ -91,7 +91,15 @@ func GetReward(pn string) (htmlStr string) {
 	if err != nil {
 		log.Fatal("", err)
 		return ""
+
 	}
+
+	req.Header.Add("Sec-Fetch-Mode", "navigate")
+	req.Header.Add("Sec-Fetch-Site", "same-origin")
+	req.Header.Add("Sec-Fetch-User", "?1")
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
+	req.Header.Add("Host", "jingyan.baidu.com")
+	req.Header.Add("Connection", " keep-alive")
 	req.Header.Add("Accept-Language", " zh-CN,zh;q=0.9")
 	req.Header.Add("Connection", " keep-alive")
 	req.Header.Add("Cache-Control", "max-age=0")
