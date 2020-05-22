@@ -4,7 +4,7 @@ package test
 //	mux := http.NewServeMux()
 //	mux.Handle("/", &helloHandler{})
 //	log.Println("Starting HTTP server...")
-//	log.Fatal(http.ListenAndServe("localhost:4000", mux))
+//	logs.Error(http.ListenAndServe("localhost:4000", mux))
 //}
 //
 //type helloHandler struct{}

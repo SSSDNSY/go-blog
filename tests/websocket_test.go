@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"html/template"
-	"log"
 	"net/http"
 	"testing"
 )
@@ -78,7 +77,7 @@ func TestWebsocketServe(t *testing.T) {
 	http.Handle("/send", http.HandlerFunc(myHandler))
 
 	if err := http.ListenAndServe(":1234", nil); err != nil {
-		log.Fatal("ListenAndServe:", err)
+		logs.Error("ListenAndServe:", err)
 	}
 }
 

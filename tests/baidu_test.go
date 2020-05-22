@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/astaxie/beego/logs"
 	"go-blog/util"
 	"strconv"
 	"strings"
@@ -35,6 +36,14 @@ func TestGetExpNum(t *testing.T) {
 //已悬赏经验测试
 func TestRewardExpNum(t *testing.T) {
 	util.ParRewardExp()
+}
+
+//log
+func TestLogFetal(t *testing.T) {
+	logs.Error("123")
+	logs.Error("qqq")
+	logs.Error("4444444444")
+	logs.Error("34444")
 }
 
 func TestGoQuery(t *testing.T) {
