@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"golang.org/x/net/websocket"
 	"html/template"
 	"net/http"

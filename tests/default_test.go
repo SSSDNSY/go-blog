@@ -2,7 +2,11 @@ package test
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"go-blog/util"
+	"io"
+	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -18,13 +22,13 @@ func TestStrings(t *testing.T) {
 }
 
 func TestTime(t *testing.T) {
-	t1 :=time.Now().Local()
+	t1 := time.Now().Local()
 	fmt.Println(t1)
 	fmt.Println(t1.Hour())
 	fmt.Println(t1.Minute())
 	fmt.Println(t1.Second())
 
-	fmt.Println("格式化日期"+util.PaserDateTime(t1))
+	fmt.Println("格式化日期" + util.PaserDateTime(t1))
 }
 
 func TestSefFunc(t *testing.T) {
@@ -41,4 +45,12 @@ func TestSplit(t *testing.T) {
 func TestEqt(t *testing.T) {
 	fmt.Println(strings.EqualFold("123", "12"))
 	fmt.Println(strings.EqualFold("123", strings.Trim("   123 ", " ")))
+}
+func TestNetHttp(t *testing.T) {
+	resp, err := http.Get("https://www.baidu.com")
+	if err != nil {
+		logs.Error(err)
+	}
+	defer resp.Body.Close()
+	io.Copy(os.Stdout, resp.Body)
 }
