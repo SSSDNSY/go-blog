@@ -20,6 +20,6 @@ require (
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/temoto/robotstxt v1.1.1 // indirect
 	github.com/unknwon/com v1.0.1
-	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2
+	golang.org/x/net v0.0.0-20200602114024-627f9648deb9
 	google.golang.org/appengine v1.6.6 // indirect
 )

@@ -16,6 +16,7 @@ func Init() {
 	beego.Router("/reply/add", &controllers.ReplyController{}, "post:Add")
 	beego.Router("/reply/delete", &controllers.ReplyController{}, "get:Delete")
 	beego.Router("/bdjy", &controllers.BdjyController{})
+	beego.Router("/wc", &controllers.WeChartController{})
 	//自动路由
 	beego.AutoRouter(&controllers.TopicController{})
 	beego.AutoRouter(&controllers.BdjyController{})
