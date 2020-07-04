@@ -3,10 +3,29 @@ package util
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/astaxie/beego/logs"
-	"go-blog/models"
 	"strconv"
 	"strings"
 )
+
+type BDParam struct {
+	Uname  string
+	Level  string
+	Intro  string
+	Expnum string
+	Fans   string
+
+	Returns  string
+	Quality  string
+	Interact string
+	Cash     string
+	Wealth   string
+	Active   string
+	Origin   string
+
+	Timing string
+
+	Others map[string]string
+}
 
 //缓存
 var CacheExp = GetIns()
@@ -14,9 +33,9 @@ var CacheExp = GetIns()
 /**
 解析百度经验个人页面
 */
-func ParsePerson(htmlTxt string) (*models.BDParam, error) {
+func ParsePerson(htmlTxt string) (*BDParam, error) {
 
-	bd := &models.BDParam{}
+	bd := &BDParam{}
 	otherMap := make(map[string]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {

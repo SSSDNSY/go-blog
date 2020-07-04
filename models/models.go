@@ -3,18 +3,13 @@ package models
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/unknwon/com"
+	_ "github.com/go-sql-driver/mysql"
+	"go-blog/util"
 	"os"
 	"path"
 	"strconv"
 	"strings"
 	"time"
-)
-
-const (
-	_DB_NAME        = "data/app1.db"
-	_SQLITE3_DRIVER = "sqlite3"
 )
 
 type Category struct {
@@ -59,26 +54,6 @@ type Files struct {
 	Time time.Time
 }
 
-type BDParam struct {
-	Uname  string
-	Level  string
-	Intro  string
-	Expnum string
-	Fans   string
-
-	Returns  string
-	Quality  string
-	Interact string
-	Cash     string
-	Wealth   string
-	Active   string
-	Origin   string
-
-	Timing string
-
-	Others map[string]string
-}
-
 type Nav struct {
 	TotalNum   int //总条数
 	CurrentNum int //当前页
@@ -91,13 +66,10 @@ TODO============================================================================
 ***********************************************************************************************************/
 
 func RegisterDB() {
-	if !com.IsExist(_DB_NAME) {
-		os.MkdirAll(path.Dir(_DB_NAME), os.ModePerm)
-		os.Create(_DB_NAME)
-	}
+	util.Init()
 	orm.RegisterModel(new(Category), new(Topic), new(Comment))
-	orm.RegisterDriver(_SQLITE3_DRIVER, orm.DRSqlite)
-	orm.RegisterDataBase("default", _SQLITE3_DRIVER, _DB_NAME, 10)
+	orm.RegisterDriver(util.DriveName, orm.DRMySQL)
+	orm.RegisterDataBase("default", util.DriveName, util.DbConn, 10)
 }
 
 //
