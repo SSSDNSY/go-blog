@@ -8,7 +8,9 @@ type WeChatController struct {
 
 func (this *WeChatController) Get() {
 	m := make(map[string]string)
-	m["param"] = this.Input().Get("param")
+	paramStr := this.Input().Get("param")
+	m["param"] = paramStr
+	beego.Info("微信调用:", paramStr)
 	this.Data["json"] = m["param"]
 	this.ServeJSON()
 }
