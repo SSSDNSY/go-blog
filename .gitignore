@@ -1,0 +1,10 @@
+/data
+/attachment
+/conf
+
+.idea
+.git
+
+*.zip
+*.exe
+
