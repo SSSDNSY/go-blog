@@ -46,7 +46,7 @@ func loadApp() {
 	//ProdDB = "root:root@tcp(111.229.192.247:3306)/goblog?charset=utf8"
 	RunMode = section.Key("RunMode").MustString("dev")
 	DriveName = section.Key("DriveName").MustString("mysql")
-	DevDB = section.Key("DevDb").MustString("root:root@tcp(127.0.0.1:3306)/goblog?charset=utf8")
+	DevDB = section.Key("DevDB").MustString("root:root@tcp(127.0.0.1:3306)/goblog?charset=utf8")
 	ProdDB = section.Key("ProdDB").MustString("root:root@tcp(111.229.192.247:3306)/goblog?charset=utf8")
 	if RunMode == "dev" {
 		DbConn = DevDB
