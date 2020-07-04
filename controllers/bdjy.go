@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"go-blog/util"
-	"log"
 	"strings"
 )
 
@@ -45,7 +45,7 @@ func (this *BdjyController) Reward() {
 
 func getUUID(uuid string) string {
 	if len(cacheArr) > 9999 {
-		log.Fatal("uuid缓存数组超过极限值 %v =%d", cacheArr, len(cacheArr))
+		logs.Error("uuid缓存数组超过极限值 %v =%d", cacheArr, len(cacheArr))
 	}
 	if nil == lru && len(lru) == 0 {
 		lru = make(map[string]string)

@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/Unknwon/goconfig"
+	"github.com/astaxie/beego/logs"
 	"log"
 	"testing"
 )
@@ -10,7 +11,7 @@ func TestConf(t *testing.T) {
 	confFile := "../conf/conf.ini"
 	cfg, err := goconfig.LoadConfigFile(confFile)
 	if err != nil {
-		log.Fatal("无法获取配置文件", confFile, ": ", err)
+		logs.Error("无法获取配置文件", confFile, ": ", err)
 	}
 	//获取配置kv
 	val, err := cfg.GetValue(goconfig.DEFAULT_SECTION, "key_default")
@@ -31,7 +32,7 @@ func TestConf(t *testing.T) {
 	//不同类型的值读取
 	vInt, err := cfg.Int("must", "int")
 	if err != nil {
-		log.Fatal("无法获取配置文件", confFile, ": ", err)
+		logs.Error("无法获取配置文件", confFile, ": ", err)
 	}
 	println("vInt=", vInt)
 

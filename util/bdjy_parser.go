@@ -2,8 +2,8 @@ package util
 
 import (
 	"github.com/PuerkitoBio/goquery"
+	"github.com/astaxie/beego/logs"
 	"go-blog/models"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -20,7 +20,7 @@ func ParsePerson(htmlTxt string) (*models.BDParam, error) {
 	otherMap := make(map[string]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
-		log.Fatal("goquery.NewDocumentFromReader err :", err)
+		logs.Error("goquery.NewDocumentFromReader err :", err)
 		return bd, err
 	}
 
@@ -81,7 +81,7 @@ func ParseExPublished(bdid string) map[string]map[string]map[string]string {
 	htmlTxt := GetPostExp(bdid, "0")
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
-		log.Fatal("goquery.NewDocumentFromReader err :", err)
+		logs.Error("goquery.NewDocumentFromReader err :", err)
 		return result
 	}
 
@@ -118,7 +118,7 @@ func ParRewardExp() map[int]string {
 	maps := make(map[int]string)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlTxt))
 	if err != nil {
-		log.Fatal(" ParRewardExp goquery .NewDocumentFromReader err :", err)
+		logs.Error(" ParRewardExp goquery .NewDocumentFromReader err :", err)
 	}
 	doc.Find("div.li-par").Each(func(i int, s *goquery.Selection) {
 		maps[index] = s.Text()

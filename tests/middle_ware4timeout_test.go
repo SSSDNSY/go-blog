@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"github.com/astaxie/beego/logs"
 	"log"
 	"net/http"
 	"os"
@@ -24,13 +25,13 @@ func TestHttpServer2(t *testing.T) {
 	go func() {
 		<-quit
 		if err := server.Shutdown(context.Background()); nil != err {
-			log.Fatal("shutdown server error:", err)
+			logs.Error("shutdown server error:", err)
 		}
 	}()
 
 	server.ListenAndServe()
 	log.Println("Starting HTTP server...")
-	log.Fatal(http.ListenAndServe("localhost:4000", mux))
+	logs.Error(http.ListenAndServe("localhost:4000", mux))
 
 }
 
