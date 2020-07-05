@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -39,6 +40,17 @@ type Topic struct {
 	ReplyLastUsrId int64
 }
 
+type ScRec struct {
+	//'id', 'user_step', 'user_time', 'user_infos', 'add_time', 'update_time', 'ext_data'
+	Id         int64     `orm:"auto"`
+	UserStep   int32     `orm:"index"`
+	UserTime   float64   `orm:"index"`
+	UserInfo   string    `orm:"index"`
+	AddTime    time.Time `orm:"index"`
+	UpdateTime time.Time
+	ExtData    string
+}
+
 type Comment struct {
 	Id      int64
 	Tid     int64
@@ -67,17 +79,55 @@ TODO============================================================================
 
 func RegisterDB() {
 	util.Init()
-	orm.RegisterModel(new(Category), new(Topic), new(Comment))
+	orm.Debug = util.OrmDebug
+	orm.RegisterModel(new(Category), new(Topic), new(Comment), new(ScRec))
 	orm.RegisterDriver(util.DriveName, orm.DRMySQL)
 	orm.RegisterDataBase("default", util.DriveName, util.DbConn, 10)
 }
 
-//
+func AddScRecord(userInfo string, userStep int32, userTime float64) error {
+	if len(userInfo) <= 0 {
+		return errors.New("userInfo 不能为空")
+	}
+	if userTime <= 0 {
+		return errors.New("userTime 必须大于0")
+	}
+	if userStep <= 0 {
+		return errors.New("userStep 必须大于0")
+	}
+	orm.Debug = true
+	o := orm.NewOrm()
+	o.Using("default")
+	cate := &ScRec{
+		UserStep:   userStep,
+		UserTime:   userTime,
+		UserInfo:   userInfo,
+		AddTime:    time.Now().Add(8 * time.Hour),
+		UpdateTime: time.Now().Add(8 * time.Hour),
+		ExtData:    "",
+	}
+	_, err := o.Insert(cate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func QueryScRecord(limit int) ([]*ScRec, error) {
+	if limit <= 0 || limit > 500 {
+		return nil, errors.New("limit 入参非法！")
+	}
+	o := orm.NewOrm()
+	sc := make([]*ScRec, 0)
+	qs := o.QueryTable("sc_rec").OrderBy("user_step", "user_time").Limit(limit)
+	_, err := qs.All(&sc)
+	return sc, err
+}
+
 func AddCateGory(name string) error {
 	orm.Debug = true
 	o := orm.NewOrm()
 	o.Using("default")
-	cate := &Category{Title: name, Created: time.Now().Local(), TopicTime: time.Now().Local(), TopicLast: time.Now().Local()}
+	cate := &Category{Title: name, Created: time.Now().Add(8 * time.Hour), TopicTime: time.Now().Add(8 * time.Hour), TopicLast: time.Now().Add(8 * time.Hour)}
 	qs := o.QueryTable("category")
 	err := qs.Filter("title", name).One(cate)
 	if err == nil {
@@ -89,6 +139,7 @@ func AddCateGory(name string) error {
 	}
 	return nil
 }
+
 func DelCategory(id string) error {
 	cid, err := strconv.ParseInt(id, 10, 64)
 	if nil != err {
@@ -118,11 +169,11 @@ func AddTopic(title, content, category, label, attachmentFileName string) error 
 		Labels:         label,
 		Content:        content,
 		Attachment:     attachmentFileName,
-		Created:        time.Now().Local(),
-		Updated:        time.Now().Local(),
+		Created:        time.Now().Add(8 * time.Hour),
+		Updated:        time.Now().Add(8 * time.Hour),
 		Views:          0,
 		Author:         "",
-		ReplyTime:      time.Now().Local(),
+		ReplyTime:      time.Now().Add(8 * time.Hour),
 		ReplyCount:     0,
 		ReplyLastUsrId: 0,
 	}
@@ -206,7 +257,7 @@ func EditTopic(tid, title, content, category, label, attachmentFileName string) 
 		topic.Attachment = attachmentFileName
 		topic.Content = content
 		topic.Labels = label
-		topic.Created = time.Now().Local()
+		topic.Created = time.Now().Add(8 * time.Hour)
 		o.Update(topic)
 	}
 	//更新分类的文章数
@@ -275,7 +326,7 @@ func AddReply(tid, nikeName, content string) error {
 		Tid:     tidNu,
 		Name:    nikeName,
 		Content: content,
-		Created: time.Now().Local(),
+		Created: time.Now().Add(8 * time.Hour),
 	}
 	o := orm.NewOrm()
 	_, err = o.Insert(reply)
@@ -286,7 +337,7 @@ func AddReply(tid, nikeName, content string) error {
 		Id: tidNu,
 	}
 	if o.Read(topic) == nil {
-		topic.ReplyTime = time.Now().Local()
+		topic.ReplyTime = time.Now().Add(8 * time.Hour)
 		topic.ReplyCount++
 		_, err = o.Update(topic)
 	}

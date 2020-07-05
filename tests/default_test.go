@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"go-blog/controllers"
 	"go-blog/util"
 	"io"
 	"net/http"
@@ -53,4 +54,13 @@ func TestNetHttp(t *testing.T) {
 	}
 	defer resp.Body.Close()
 	io.Copy(os.Stdout, resp.Body)
+}
+
+func TestGetMD5Hash(t *testing.T) {
+
+	logs.Info("sign", util.GetMD5Hash(controllers.GET_ALL+util.ApiAppSecrect))
+	logs.Info("sign", util.GetMD5Hash(controllers.ADD+util.ApiAppSecrect))
+	//logs.Info("sign",util.GetMD5Hash(controllers.GET_ONE+util.ApiAppSecrect))
+	//logs.Info(util.RandomStr(88)) key
+	//logs.Info(util.RandomStr(36)) secret
 }
