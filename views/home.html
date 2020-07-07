@@ -13,14 +13,14 @@
                     <div class="card-body mt-2 mb-2">
                         <a href="/topic/view/{{.Id}}">
                             <h2 class="card-title">{{.Title}} </h2>
-                            <h6 class="text-muted">
-                                <span class="oi oi-timer"> {{ date .Updated "Y-m-d H:i:s"}}</span>
-                                <span class="oi oi-video ml-3">{{.Views}}</span>
-                                <span class="oi oi-comment-square ml-3">{{.ReplyCount}}</span>
+                            <h6 class="text-muted float-right">
+                                <span> <ion-icon name="time-outline"></ion-icon>{{ date .Updated "Y-m-d H:i:s"}}</span>
+                                <span><ion-icon name="eye-outline"></ion-icon>{{.Views}}</span>
+                                <span><ion-icon name="chatbox-ellipses-outline"></ion-icon>{{.ReplyCount}}</span>
                             </h6>
-                            <p id="hv" class="card-text mb-auto ">
-                                {{.Content}}
-                            </p>
+                            <code id="hv" class="card-text mb-auto">
+                                {{ substr .Content 0 100}}
+                            </code>
                         </a>
                     </div>
                 </div>

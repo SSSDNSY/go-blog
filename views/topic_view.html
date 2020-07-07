@@ -8,7 +8,8 @@
         <div class="card-body">
             <h4 class="card-title">{{.Topic.Title}} 附件：( <a
                         href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a>)</h4>
-            <textarea id="editorView" class="text-default">{{.Topic.Content}}</textarea>
+            <textarea style="display: none;" id="editorView">{{.Topic.Content}}</textarea>
+            <div id="context"></div>
         </div>
     </div>
     <a href="/topic/edit?tid={{.Tid}}" class="btn btn-primary float-right">修改文章</a>
@@ -28,7 +29,7 @@
     {{range .Replies}}
         <div class="border border-primary rounded mt-4 mt-6">
             <h6> {{.Name}}</h6>
-            <textarea class="text-info">{{.Content}}</textarea>
+            <p class="text-info">{{.Content}} ></p>
             {{if $isLogin}}
                 <a class="float-right text-danger" href="/reply/delete?tid={{$Tid}}&rid={{.Id}}">删除</a>
             {{end}}
@@ -44,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label for="">评论内容：</label>
-                <textarea name="content" id="editorComment" cols="30" rows="5" class="form-control"></textarea>
+                <p name="content" id="editorComment" cols="30" rows="5" class="form-control"></p>
             </div>
             <button type="submit" class="btn btn-primary ">评论</button>
         </form>
@@ -61,10 +62,14 @@
                 name: "side-by-side",
                 className: "fa fa-columns  no-disable no-mobile",
                 title: "side-by-side",
-                action:SimpleMDE.toggleSideBySide
+                action: SimpleMDE.toggleSideBySide
 
             }, "fullscreen"],
     });
+    editorView.prevew()
+    var val = editorView.value()
+    var html = editorView.markdown(val)
+    document.getElementById("editorView").append(html)
 </script>
 </html>
 
