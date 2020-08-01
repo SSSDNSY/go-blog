@@ -1,10 +1,10 @@
 /data
 /attachment
 
+/view
+
 .idea
 .git
 
 *.zip
 *.exe
-
-./view
