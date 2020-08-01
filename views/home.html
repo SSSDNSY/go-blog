@@ -1,48 +1,12 @@
-{{template "header"}}
-<title>首页 - imiBLOG</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ template "header" .}}
 </head>
 <body>
-{{template "navbar" .}}
-<div class="container">
-    <div class="c-space"></div>
-    <div class="row mt-2 mb-2">
-        <div class="col-12 col-md-10">
-
-            {{range .Topics}}
-                <div class="card mb-2 shadow-sm">
-                    <div class="card-body mt-2 mb-2">
-                        <a href="/topic/view/{{.Id}}">
-                            <h2 class="card-title">{{.Title}} </h2>
-                            <h6 class="text-muted float-right">
-                                <span> <ion-icon name="time-outline"></ion-icon>{{ date .Updated "Y-m-d H:i:s"}}</span>
-                                <span><ion-icon name="eye-outline"></ion-icon>{{.Views}}</span>
-                                <span><ion-icon name="chatbox-ellipses-outline"></ion-icon>{{.ReplyCount}}</span>
-                            </h6>
-                            <code id="hv" class="card-text mb-auto">
-                                {{ substr .Content 0 100}}
-                            </code>
-                        </a>
-                    </div>
-                </div>
-            {{end}}
-
-        </div>
-        <div class="col-md-2">
-            <h3>文章分类</h3>
-            <ul class="list-group list-unstyled">
-                {{range .Categories}}
-                    <li class=""><a href="/?cate={{.Title}}">{{.Title}}</a></li>
-                {{end}}
-            </ul>
-        </div>
-    </div>
-</div>
+{{ template "navigation" .}}
+{{template "pageheader" .}}
+{{template "content" .}}
+{{ template "footer" .}}
 </body>
-{{template "footer"}}
-<script>
-    // let hv = new SimpleMDE({ element: document.getElementById("hv") ,
-    // toolbar:false,toolbox:false});
-
-</script>
 </html>
-

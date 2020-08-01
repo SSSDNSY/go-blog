@@ -17,7 +17,9 @@ var cacheArr []map[string]string
 func (this *BdjyController) Get() {
 	this.Data["IsBd"] = true
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["lru"] = lru
+	this.Data["subtitle"] = "百度经验统计"
+	this.Data["image"] = "static/img/about-bg.jpg"
+	this.Data["title"] = " jingyan"
 	this.TplName = "bdjy.html"
 }
 

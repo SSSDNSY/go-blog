@@ -217,6 +217,18 @@ func GetAllTopic(cate string, label string, isDesc bool) ([]*Topic, error) {
 	return topics, err
 }
 
+func GetPageTopic(pageNum int64, pageSize int64) ([]*Topic, error) {
+	o := orm.NewOrm()
+	topics := make([]*Topic, 0)
+	qs := o.QueryTable("topic")
+	count, err := qs.Count()
+	if count%pageSize < pageNum {
+		return nil, err
+	}
+	_, err = qs.OrderBy("-updated").Limit(pageSize, (pageNum-1)*pageSize).All(&topics)
+	return topics, err
+}
+
 func GetTopic(tid string) (*Topic, error) {
 
 	tidNum, err := strconv.ParseInt(tid, 10, 64)

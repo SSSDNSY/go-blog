@@ -4,6 +4,17 @@
  *@date: 2020/4/10
  */
 
+function getWord($) {
+    $.get("/about/getWord", function (data) {
+        $("#pageHeader").text(data)
+    });
+}
+
+getWord($)
+setInterval(function (window) {
+    getWord($)
+}, 1000 * 15)
+
 const PAGE_SIZE = 10
 
 
@@ -273,3 +284,5 @@ function searchReward(param) {
 function onMyPerExp() {
 
 }
+
+

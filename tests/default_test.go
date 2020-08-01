@@ -64,3 +64,17 @@ func TestGetMD5Hash(t *testing.T) {
 	//logs.Info(util.RandomStr(88)) key
 	//logs.Info(util.RandomStr(36)) secret
 }
+func TestWord(t *testing.T) {
+	resp, err := http.Get("https://pyq.shadiao.app/api.php")
+	if err != nil {
+		logs.Error(err)
+	}
+	defer resp.Body.Close()
+	io.Copy(os.Stdout, resp.Body)
+}
+func TestPagination(t *testing.T) {
+	//topics, err := models.GetPageTopic(1, 2, "", "", true)
+	//if err != nil {
+	//	logs.Info(topics)
+	//}
+}

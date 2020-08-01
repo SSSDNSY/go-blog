@@ -1,11 +1,14 @@
-{{template "header"}}
-<title>首页 - imiBLOG</title>
-<script src="../static/js/echarts.min.js"></script>
-<script src="../static/js/echartConfig.js"></script>
-<title>百度经验统计</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ template "header" .}}
+    <script src="../static/js/echarts.min.js"></script>
+    <script src="../static/js/echartConfig.js"></script>
 </head>
 <body>
-{{template "navbar" .}}
+{{ template "navigation" .}}
+{{template "pageheader" .}}
+
 <div class="container mt-2 mb-2 my">
     <div class="row">
         <div class="col-md-3 col-sm-12 border rounded mx-auto">
@@ -64,7 +67,6 @@
                     <div class="card-text">
                         <div class="list-group" id="postExps" >
                         </div>
-                        {{template "nav"}}
                     </div>
                 </div>
             </div>
@@ -81,7 +83,6 @@
                         </div>
                         <div class="list-group"  id ="rewardList">
                         </div>
-                        {{template "nav"}}
                     </div>
                 </div>
             </div>
@@ -112,9 +113,10 @@
 
     </div>
 </div>
+
+{{ template "footer" .}}
 </body>
-{{template "footer"}}
-</html>
+
 <script type="text/javascript">
 
     // 基于准备好的dom，初始化echarts实例
@@ -127,5 +129,5 @@
     // myChartDemo.setOption(o1)
     myRadarChart.setOption(o3)
     myStatistics.setOption(o4)
-
 </script>
+</html>

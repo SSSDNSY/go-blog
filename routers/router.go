@@ -8,7 +8,10 @@ import (
 func Init() {
 	//注册页面路由
 	beego.Router("/", &controllers.Home{})
-	beego.Router("/login", &controllers.LoginController{})
+	beego.Router("/about", &controllers.About{})
+	beego.Router("/about/getWord", &controllers.About{}, "get:GetWord")
+	beego.Router("/contact", &controllers.Contact{})
+	beego.Router("/login", &controllers.About{})
 	beego.Router("/category", &controllers.CategoryController{})
 	beego.Router("/file", &controllers.AttachmentController{})
 	beego.Router("/topic", &controllers.TopicController{})

@@ -6,13 +6,18 @@
 <div class="container mt-2 mb-2">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">{{.Topic.Title}} 附件：( <a
-                        href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a>)</h4>
-            <textarea style="display: none;" id="editorView">{{.Topic.Content}}</textarea>
-            <div id="context"></div>
+            <h4 class="card-title">{{.Topic.Title}}
+                <a class="float-right" href="/attachment/{{.Topic.Attachment}}">附件：( {{.Topic.Attachment}})</a>
+            </h4>
+            {{if .Topic.Content }}
+                <textarea style="display: none;" id="editorView">{{.Topic.Content}}</textarea>
+            {{end}}
         </div>
     </div>
-    <a href="/topic/edit?tid={{.Tid}}" class="btn btn-primary float-right">修改文章</a>
+    {{if .IsLogin}}
+        <a class="float-right" href="/topic/edit?tid={{.Tid}}" class="btn btn-primary float-right">修改文章</a>
+    {{end}}
+
 </div>
 <br/>
 <br/>
@@ -56,17 +61,9 @@
 <script>
     let editorView = new SimpleMDE({
         element: document.getElementById("editorView"),
-        toolbar: ["bold", "strikethrough", "italic", "heading", "|", "code", "quote", "|",
-            "unordered-list", "ordered-list", "image", "table", "|", "preview",
-            {
-                name: "side-by-side",
-                className: "fa fa-columns  no-disable no-mobile",
-                title: "side-by-side",
-                action: SimpleMDE.toggleSideBySide
-
-            }, "fullscreen"],
+        toolbar: null,
     });
-    editorView.prevew()
+
     var val = editorView.value()
     var html = editorView.markdown(val)
     document.getElementById("editorView").append(html)
