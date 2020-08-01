@@ -5,7 +5,7 @@
             <div class="col-lg-8 col-md-10 mx-auto">
                 {{range .Topics}}
                     <div class="post-preview">
-                        <a href="post.html">
+                        <a href="/topic/blog/{{.Id}}">
                             <h2 class="post-title">
                                 {{.Title}}
                             </h2>

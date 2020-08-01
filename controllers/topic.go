@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"go-blog/models"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -14,20 +15,23 @@ type TopicController struct {
 
 const TIME_LAYOUT = "2006-01-02 15:04:05"
 
-func (this *TopicController) Get() {
+func (this *TopicController) Blog() {
+	id := this.Ctx.Input.Params()["0"]
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
 	this.Data["IsTopic"] = true
 	this.TplName = "topic.html"
-	topics, err := models.GetAllTopic("", "", false)
-	if nil != err {
-		beego.Error(err.Error())
-	} else {
-		for t, _ := range topics {
-			topics[t].ReplyTime, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
-			topics[t].Created, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
-			topics[t].Updated, _ = time.Parse(TIME_LAYOUT, topics[t].ReplyTime.Format(TIME_LAYOUT))
+	this.GetString("id")
+	_, err := strconv.Atoi(id)
+	if err == nil {
+		topic, err1 := models.GetTopic(id)
+		if nil != err1 {
+			beego.Error(err1.Error())
+		} else {
+			topic.ReplyTime, _ = time.Parse(TIME_LAYOUT, topic.ReplyTime.Format(TIME_LAYOUT))
+			topic.Created, _ = time.Parse(TIME_LAYOUT, topic.ReplyTime.Format(TIME_LAYOUT))
+			topic.Updated, _ = time.Parse(TIME_LAYOUT, topic.ReplyTime.Format(TIME_LAYOUT))
+			this.Data["Topic"] = topic
 		}
-		this.Data["Topics"] = topics
 	}
 }
 

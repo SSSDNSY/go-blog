@@ -21,6 +21,6 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/default.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="/static/css/clean-blog.min.css" rel="stylesheet">
+    <link href="/static/css/clean-blog.css" rel="stylesheet">
 
 {{end}}

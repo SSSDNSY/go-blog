@@ -3,7 +3,6 @@
  *@Author: imi
  *@date: 2020/4/10
  */
-
 function getWord($) {
     $.get("/about/getWord", function (data) {
         $("#pageHeader").text(data)

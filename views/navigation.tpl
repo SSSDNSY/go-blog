@@ -1,6 +1,6 @@
 {{define "navigation"}}
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top is-fixed is-visible" id="mainNav">
         <div class="container">
             <a class="navbar-brand" href="/">彭智慧</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
