@@ -15,9 +15,8 @@ type About struct {
 
 func (this *About) Get() {
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["title"] = getUrl(util.Api4)
+	this.Data["title"] = "About me"
 	this.Data["image"] = "static/img/home-bg.jpg"
-	this.Data["about.go"] = " less is more "
 	this.TplName = "about.html"
 }
 
