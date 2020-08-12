@@ -118,7 +118,10 @@ func QueryScRecord(limit int) ([]*ScRec, error) {
 	}
 	o := orm.NewOrm()
 	sc := make([]*ScRec, 0)
-	qs := o.QueryTable("sc_rec").OrderBy("user_step", "user_time").Limit(limit)
+	qs := o.QueryTable("sc_rec").
+		Exclude("user_info", "AI player").
+		OrderBy("user_step", "user_time", "add_time", "update_time").
+		Limit(limit)
 	_, err := qs.All(&sc)
 	return sc, err
 }
