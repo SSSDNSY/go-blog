@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ template "header" .}}
+    <!-- codemirror -->
+    <link rel="stylesheet" href="/static/lib/codemirror.css">
+    <link rel="stylesheet" href="/static/addon/fold/foldgutter.css">
+    <link rel="stylesheet" href="/static/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="/static/theme/idea.css">
+    <link rel="stylesheet" href="/static/theme/eclipse.css">
+    <link rel="stylesheet" href="/static/theme/monokai.css">
+    <link rel="stylesheet" href="/static/theme/midnight.css">
+    <script src="/static/lib/codemirror.js"></script>
+    <script src="/static/addon/search/searchcursor.js"></script>
+    <script src="/static/addon/search/search.js"></script>
+    <script src="/static/addon/dialog/dialog.js"></script>
+    <script src="/static/addon/edit/matchbrackets.js"></script>
+    <script src="/static/addon/edit/closebrackets.js"></script>
+    <script src="/static/addon/comment/comment.js"></script>
+    <script src="/static/addon/wrap/hardwrap.js"></script>
+    <script src="/static/addon/fold/foldcode.js"></script>
+    <script src="/static/addon/fold/brace-fold.js"></script>
+    <script src="/static/mode/clike/clike.js"></script>
+    <script src="/static/mode/javascript/javascript.js"></script>
+    <script src="/static/mode/markdown/markdown.js"></script>
+    <script src="/static/mode/scheme/scheme.js"></script>
+    <script src="/static/keymap/sublime.js"></script>
+    <!--toast-->
+    <link href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+<body style="background-color:#eee">
+
+<!-- Post Content -->
+<div class="editContainer">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-2 mx-auto mt9">
+
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-blog-list"
+                   data-toggle="list" href="#list-blog" role="tab" aria-controls="blog" onclick="editBtn(this)">
+                    博客编辑
+                    <span class="badge badge-info badge-pill">{{.blogNum}}</span>
+                </a>
+                <a class="list-group-item list-group-item-action" id="list-cate-list" data-toggle="list"
+                   href="#list-cate" role="tab" aria-controls="cate" onclick="editBtn(this)">
+                    分类编辑
+                    <span class="badge badge-info badge-pill">{{.cateNum}}</span>
+                </a>
+                <a class="list-group-item list-group-item-action" id="list-conf-list" data-toggle="list"
+                   href="#list-conf" role="tab" aria-controls="conf" onclick="editBtn(this)">配置</li>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-9 mx-auto mt3">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-blog" role="tabpanel"
+                     aria-labelledby="list-blog-list">
+                    <div>
+                        <div class="form-row">
+                            <div class="form-group col-md-9">
+                                <label for="inputCity">标题</label>
+                                <input type="text" class="form-control" id="inputTitle" value="{{.Topic.Title}}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">分类</label>
+                                <select id="inputState" class="form-control">
+                                    <option selected>{{.Topic.Category}}</option>
+                                    {{range  .Categories}}
+                                        <option>{{.Title}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <article id="articleId"></article>
+                                <input type="hidden" id="articleText" value="{{.Topic.Content}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-cate" role="tabpanel"
+                     aria-labelledby="list-cate-list">分类编辑aaaaaaa
+                </div>
+                <div class="tab-pane fade" id="list-conf" role="tabpanel"
+                     aria-labelledby="list-conf-list">配置cccccccc
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-md-1 col-1 mx-auto mt9">
+            <div class="btn-group-vertical">
+                <button type="button" style="border-top-right-radius: 4px;border-top-left-radius: 4px"
+                        class="btn btn-secondary" id="modifyBtn" onclick="modify(this)">修改
+                </button>
+                <button type="button" class="btn btn-primary" id="addBtn" onclick="add(this)">新增</button>
+                <button type="button" style="border-bottom-right-radius: 4px;border-bottom-left-radius: 4px"
+                        class="btn btn-success" id="submitBtn" onclick="submit(this)">提交
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ template "footer" .}}
+</body>
+<script>
+    //编辑器组件
+    var editor = CodeMirror(document.getElementById("articleId"), {
+        value: document.getElementById("articleText").value,// {{.Topic}},//
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        showCursorWhenSelecting: true,
+        mode: "javascript",
+        theme: "eclipse",
+        keyMap: "sublime",
+        tabSize: 2,
+        size: {width: "100%", height: "13rem"}
+    });
+    //toast 配置
+    let toast = new h5toast.Toast({
+        position: 'top-right',
+        timeout: 1235
+    })
+
+    let pending;
+    editor.on("change", function () {
+        clearTimeout(pending);
+        pending = setTimeout(update, 400);
+    });
+
+    function looksLikeScheme(code) {
+        return !/^\s*\(\s*function\b/.test(code) && /^\s*[;\(]/.test(code);
+    }
+
+    function update() {
+        editor.setOption("mode", looksLikeScheme(editor.getValue()) ? "scheme" : "javascript");
+    }
+
+    let editFlag = 1;//1:博客；    2:分类;   3:配置；
+
+    //编辑区调整
+    function editBtn(e) {
+        let text = $(e).text()
+        if (text && text.indexOf('博客') > -1) {
+            editFlag = 1;
+        }
+        if (text && text.indexOf('分类') > -1) {
+            editFlag = 2;
+        }
+        if (text && text.indexOf('配置') > -1) {
+            editFlag = 2;
+        }
+
+    }
+
+    //编辑区按钮
+    function modify(e) {
+        switch (editFlag) {
+            case  1:
+
+                break;
+            case  2:
+
+                break;
+            case  3:
+
+                break;
+        }
+    }
+
+    function add(e) {
+        switch (editFlag) {
+            case  1:
+
+                break;
+            case  2:
+
+                break;
+            case  3:
+
+                break;
+        }
+    }
+
+    function submit(e) {
+        switch (editFlag) {
+            case  1:
+                let title = $('#inputTitle').val();
+                let category = $('#inputState').val();
+                let content = editor.getValue();
+                let tid = $('#inputTid').val();
+                $.post("/topic",
+                    {
+                        "title": title,
+                        "category": category,
+                        "content": content,
+                        "tid": tid
+                    }, function (e) {
+                        if (e.Code != 200) {
+                            toast.error("编辑失败！" + e.Msg)
+                        } else {
+                            toast.success("提交成功！")
+                        }
+                    })
+                break;
+            case  2:
+
+                break;
+            case  3:
+
+                break;
+        }
+    }
+</script>
+</html>

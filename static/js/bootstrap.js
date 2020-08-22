@@ -1573,11 +1573,11 @@ if (typeof jQuery === 'undefined') {
 
     function complete() {
       if (that.hoverState != 'in') $tip.detach()
-      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
-        that.$element
-          .removeAttr('aria-describedby')
-          .trigger('hidden.bs.' + that.type)
-      }
+        if (that.$element) { // TODO: Check whether guarding this e with this `if` is really necessary.
+            that.$element
+                .removeAttr('aria-describedby')
+                .trigger('hidden.bs.' + that.type)
+        }
       callback && callback()
     }
 

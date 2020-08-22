@@ -422,3 +422,23 @@ footer .copyright {
 .mt16 {
     margin-top: 5em;
 }
+
+.mt9 {
+    margin-top: 9%;
+}
+
+.mt3 {
+    margin-top: 3%;
+}
+
+.editContainer {
+    width: 95%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.editRadius {
+    border-radius: 4px;
+}

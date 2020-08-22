@@ -27,7 +27,7 @@ const tpl = `<html>
 			}
 
 			sock.onclose = function(e) {
-				console.log("connection closed (" + e.code + ")");
+				console.log("connection closed (" + e.e + ")");
 			}
 
 			sock.onmessage = function(e) {

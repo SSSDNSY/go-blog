@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/astaxie/beego"
 	"go-blog/controllers"
+	"go-blog/routers/filter"
 )
 
 func Init() {
@@ -23,10 +24,10 @@ func Init() {
 	//自动路由
 	beego.AutoRouter(&controllers.TopicController{})
 	beego.AutoRouter(&controllers.BdjyController{})
-	//静态文件处理（附件）
-	//os.Mkdir("attachment",os.ModePerm)
-	//控制器处理
+	//静态&文件处理（附件）
 	beego.Router("/attachment/:all", &controllers.AttachmentController{})
 	beego.SetStaticPath("/attachment", "attachment")
 
+	//安全过滤
+	beego.InsertFilter("*", beego.BeforeRouter, filter.JwtAuth)
 }

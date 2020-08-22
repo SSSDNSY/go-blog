@@ -24,8 +24,9 @@ var (
 	Api2 string
 	Api3 string
 	Api4 string
-
 	Bing string
+
+	JwtSecret string
 )
 
 func Init() {
@@ -64,6 +65,7 @@ func loadApp() {
 	Api4 = section.Key("Api4").MustString("")
 	PageSize = section.Key("PageSize").MustInt64(5)
 	Bing = section.Key("Bing").MustString("https://api.xygeng.cn/Bing/url/")
+	JwtSecret = section.Key("JwtSecret").MustString("309JJ2DSG98-0GD9AFJOIWERJOPEWJDS09-32")
 
 	DevDB = section.Key("DevDB").MustString("root:root@tcp(127.0.0.1:3306)/goblog?charset=utf8")
 	ProdDB = section.Key("ProdDB").MustString("root:root@tcp(111.229.192.247:3306)/goblog?charset=utf8")

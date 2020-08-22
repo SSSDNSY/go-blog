@@ -42,10 +42,11 @@
     <!-- Bootstrap core JavaScript -->
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- highlightjs -->
+    <!-- highlightjs
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>hljs.initHighlightingOnLoad();</script>-->
     <!-- Custom scripts for this template -->
     <script src="/static/js/clean-blog.js"></script>
     <script src="/static/js/main.js"></script>
+    <script src="/static/addon/toast/toast.js"></script>
 {{end}}

@@ -9,7 +9,7 @@ import (
 )
 
 func TestFile(t *testing.T) {
-	var str = "W:\\code\\algorithm\\gh\\src\\main\\java\\algo"
+	var str = "W:\\e\\algorithm\\gh\\src\\main\\java\\algo"
 	fileInfos, _ := ioutil.ReadDir(str)
 
 	num := 0

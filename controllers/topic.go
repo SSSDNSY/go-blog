@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"go-blog/controllers/e"
 	"go-blog/models"
 	"path"
 	"strconv"
@@ -20,7 +21,6 @@ func (this *TopicController) Blog() {
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
 	this.Data["IsTopic"] = true
 	this.TplName = "topic.html"
-	this.GetString("id")
 	_, err := strconv.Atoi(id)
 	if err == nil {
 		topic, err1 := models.GetTopic(id)
@@ -62,10 +62,9 @@ func (this *TopicController) View() {
 }
 
 func (this *TopicController) Edit() {
+	tid := this.Ctx.Input.Params()["0"]
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
-
-	this.TplName = "topic_edit.html"
-	tid := this.Input().Get("tid")
+	this.TplName = "topicEdit.html"
 
 	topic, err := models.GetTopic(tid)
 	if nil != err {
@@ -73,9 +72,12 @@ func (this *TopicController) Edit() {
 		this.Redirect("/", 302)
 		return
 	}
-
 	this.Data["Topic"] = topic
+	this.Data["blogNum"], _ = models.GetBlogCount()
+	this.Data["cateNum"], _ = models.GetCateCount()
 	this.Data["Tid"] = tid
+	this.Data["Categories"], _ = models.GetAllCateGories()
+
 }
 
 func (this *TopicController) Delete() {
@@ -94,16 +96,21 @@ func (this *TopicController) Delete() {
 
 //添加 修改提交到这个post方法里面
 func (this *TopicController) Post() {
-	if !checkAccount(this.Ctx) {
-		this.Redirect("/login", 302)
-		return
-	}
+	//if !checkAccount(this.Ctx) {
+	//	this.Redirect("/login", 302)
+	//	return
+	//}
 	//解析表单
 	tid := this.Input().Get("tid")
-	title := this.Input().Get("title")
-	content := this.Input().Get("content")
-	category := this.Input().Get("category")
+	title := this.GetString("title")
+	content := this.GetString("content")
+	category := this.GetString("category")
 	label := this.Input().Get("label")
+	//参数校验
+	code := e.SUCCESS
+	if title == "" || category == "" || content == "" {
+		code = e.INVALID_PARAMS
+	}
 	//获取附件
 	_, fileHeader, err := this.GetFile("attachment")
 	if nil != err {
@@ -128,5 +135,6 @@ func (this *TopicController) Post() {
 	if nil != err {
 		beego.Error(err)
 	}
-	this.Redirect("/topic", 301)
+	this.Data["json"] = e.SetResult(code, e.GetMsg(code), nil)
+	this.ServeJSON()
 }

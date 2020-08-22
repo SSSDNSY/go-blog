@@ -407,6 +407,25 @@ func DelReply(rid string) error {
 	return err
 }
 
+func GetBlogCount() (int64, error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Topic")
+	count, err := qs.Count()
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}
+func GetCateCount() (int64, error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Category")
+	count, err := qs.Count()
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}
+
 func transId(id string) {
 
 }
