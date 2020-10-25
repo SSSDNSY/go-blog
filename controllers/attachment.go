@@ -16,8 +16,6 @@ type AttachmentController struct {
 const ATTACHMENT_PATH = "attachment"
 
 func (this *AttachmentController) Get() {
-	this.Data["IsFile"] = true
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
 
 	filePath, err := url.QueryUnescape(this.Ctx.Request.RequestURI[1:])
 	//文件下载操作

@@ -10,8 +10,6 @@ type ReplyController struct {
 }
 
 func (this *ReplyController) Get() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["IsTopic"] = true
 	this.TplName = "topic.html"
 	topics, err := models.GetAllTopic("", "", false)
 	if nil != err {
@@ -22,8 +20,6 @@ func (this *ReplyController) Get() {
 }
 
 func (this *ReplyController) Add() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["IsTopic"] = true
 
 	tid := this.Input().Get("tid")
 	err := models.AddReply(tid, this.Input().Get("nickName"),
@@ -35,11 +31,6 @@ func (this *ReplyController) Add() {
 }
 
 func (this *ReplyController) Delete() {
-	if !checkAccount(this.Ctx) {
-		return
-	}
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["IsTopic"] = true
 
 	tid := this.Input().Get("tid")
 	err := models.DelReply(this.Input().Get("rid"))

@@ -9,18 +9,17 @@ import (
 	"net/http"
 )
 
-type About struct {
+type AboutController struct {
 	beego.Controller
 }
 
-func (this *About) Get() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["title"] = "About me"
+func (this *AboutController) Get() {
+	this.Data["title"] = "AboutController me"
 	this.Data["image"] = "static/img/home-bg.jpg"
 	this.TplName = "about.html"
 }
 
-func (this *About) GetWord() {
+func (this *AboutController) GetWord() {
 	this.Data["json"] = getUrl(util.Api4)
 	this.ServeJSON()
 }
@@ -32,7 +31,7 @@ func getUrl(url string) string {
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logs.Error("About getWord err : ", err)
+		logs.Error("AboutController getWord err : ", err)
 	}
 	word := string(body)
 	myMap := make(map[string]string)

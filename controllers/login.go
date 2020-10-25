@@ -2,53 +2,52 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/context"
+	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/validation"
+	"go-blog/controllers/e"
+	"go-blog/util"
 )
 
 type LoginController struct {
 	beego.Controller
 }
-
-func (this *LoginController) Get() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	isExist := this.Input().Get("exit") == "true"
-	if isExist {
-		this.Ctx.SetCookie("account", "", -1, "/")
-		this.Ctx.SetCookie("password", "", -1, "/")
-		this.Redirect("/", 301)
-		return
-	}
-	this.TplName = "login.html"
+type auth struct {
+	Account  string `valid:"Required; MaxSize(50)"`
+	Password string `valid:"Required; MaxSize(50)"`
 }
 
 func (this *LoginController) Post() {
 	//this.Ctx.WriteString(fmt.Sprint(this.Input()))
-	account := this.Input().Get("account")
-	password := this.Input().Get("password")
-	autoLogin := this.Input().Get("autoLogin") == "on"
-	if account == beego.AppConfig.String("adminU") && password == beego.AppConfig.String("adminP") {
-		maxAge := 0
-		if autoLogin == true {
-			maxAge = 1<<31 - 1
+	account := this.GetString("account")
+	password := this.GetString("password")
+
+	valid := validation.Validation{}
+	a := auth{Account: account, Password: password}
+	ok, _ := valid.Valid(&a)
+
+	data := make(map[string]interface{})
+	code := e.INVALID_PARAMS
+	if ok {
+		isExist := account == beego.AppConfig.String("adminU") && password == beego.AppConfig.String("adminP")
+		if isExist {
+			token, err := util.GenerateToken(account, password)
+			if err != nil {
+				code = e.ERROR_AUTH_TOKEN
+			} else {
+				data["token"] = token
+
+				code = e.SUCCESS
+			}
+
+		} else {
+			code = e.ERROR_AUTH
 		}
-		this.Ctx.SetCookie("account", account, maxAge, "/")
-		this.Ctx.SetCookie("password", password, maxAge, "/")
+	} else {
+		for _, err := range valid.Errors {
+			logs.Info(err.Key, err.Message)
+		}
 	}
-	this.Redirect("/", 301)
-	return
-}
+	this.Data["json"] = e.SetResult(code, e.GetMsg(code), data)
+	this.ServeJSON()
 
-func checkAccount(ctx *context.Context) bool {
-	ck, err := ctx.Request.Cookie("account")
-	if err != nil {
-		return false
-	}
-	account := ck.Value
-	ck, err = ctx.Request.Cookie("password")
-	if err != nil {
-		return false
-	}
-	password := ck.Value
-
-	return account == beego.AppConfig.String("adminU") && password == beego.AppConfig.String("adminP")
 }

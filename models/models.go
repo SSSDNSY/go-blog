@@ -142,6 +142,16 @@ func AddCateGory(name string) error {
 	}
 	return nil
 }
+func UpdCategory(id, title string) error {
+	cid, err := strconv.ParseInt(id, 10, 64)
+	if nil != err {
+		return err
+	}
+	o := orm.NewOrm()
+	cate := &Category{Id: cid, Title: title, Created: time.Now()}
+	_, err = o.Update(cate, "Title", "Created")
+	return err
+}
 
 func DelCategory(id string) error {
 	cid, err := strconv.ParseInt(id, 10, 64)
@@ -161,7 +171,7 @@ func GetAllCateGories() ([]*Category, error) {
 	return cates, err
 }
 
-func AddTopic(title, content, category, label, attachmentFileName string) error {
+func AddTopic(title, content, category, label, attachmentFileName string) (int64, error) {
 	//处理标签 $beego#$bee#
 	label = "$" + strings.Join(
 		strings.Split(strings.Trim(label, " "), " "), "#$") + "#"
@@ -180,9 +190,9 @@ func AddTopic(title, content, category, label, attachmentFileName string) error 
 		ReplyCount:     0,
 		ReplyLastUsrId: 0,
 	}
-	_, err := o.Insert(topic)
+	ID, err := o.Insert(topic)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	cate := new(Category)
 	qs := o.QueryTable("category")
@@ -193,10 +203,10 @@ func AddTopic(title, content, category, label, attachmentFileName string) error 
 		//cate.TopicCount = len(topics)
 		_, err = o.Update(cate)
 		if err != nil {
-			return err
+			return -1, err
 		}
 	}
-	return err
+	return ID, err
 }
 
 func GetAllTopic(cate string, label string, isDesc bool) ([]*Topic, error) {

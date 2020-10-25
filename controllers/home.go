@@ -13,12 +13,10 @@ type Home struct {
 }
 
 func (this *Home) Get() {
-	this.Data["IsHome"] = true
 	this.Data["title"] = "Pengzh"
 	this.Data["image"] = "https://open.saintic.com/api/bingPic/"
 	this.Data["subtitle"] = " less is more "
 	this.TplName = "home.html"
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
 
 	this.Data["leftDis"] = "none"
 	this.Data["RightDis"] = ""

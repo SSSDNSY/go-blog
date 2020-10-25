@@ -7,13 +7,14 @@ import (
 	"time"
 )
 
-func JwtAuth(ctx *context.Context) {
-	token := ctx.GetCookie("token")
+func JwtAuth(this *context.Context) {
+
+	token := this.GetCookie("token")
 	if len(token) == 0 {
 		logs.Info("token is empty")
 		generateToken, err := util.GenerateToken("admin", "121233")
 		if err == nil {
-			ctx.SetCookie("token", generateToken, 5, "/")
+			this.SetCookie("token", generateToken, 5, "/")
 		}
 	} else {
 		logs.Info("token is :", token)

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"go-blog/controllers/e"
 	"go-blog/models"
 	"path"
@@ -18,14 +19,12 @@ const TIME_LAYOUT = "2006-01-02 15:04:05"
 
 func (this *TopicController) Blog() {
 	id := this.Ctx.Input.Params()["0"]
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	this.Data["IsTopic"] = true
 	this.TplName = "topic.html"
 	_, err := strconv.Atoi(id)
 	if err == nil {
 		topic, err1 := models.GetTopic(id)
 		if nil != err1 {
-			beego.Error(err1.Error())
+			logs.Error(err1.Error())
 		} else {
 			topic.ReplyTime, _ = time.Parse(TIME_LAYOUT, topic.ReplyTime.Format(TIME_LAYOUT))
 			topic.Created, _ = time.Parse(TIME_LAYOUT, topic.ReplyTime.Format(TIME_LAYOUT))
@@ -36,17 +35,15 @@ func (this *TopicController) Blog() {
 }
 
 func (this *TopicController) Add() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
 	this.TplName = "topic_add.html"
 }
 
 func (this *TopicController) View() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
 
 	this.TplName = "topic_view.html"
 	topic, err := models.GetTopic(this.Ctx.Input.Param("0"))
 	if nil != err {
-		beego.Error(err)
+		logs.Error(err)
 		this.Redirect("/", 302)
 		return
 	}
@@ -54,7 +51,7 @@ func (this *TopicController) View() {
 	this.Data["Labels"] = strings.Split(strings.Trim(topic.Labels, " "), " ")
 	replies, err := models.GetAllReplies(this.Ctx.Input.Param("0"))
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 	this.Data["Replies"] = replies
@@ -63,12 +60,11 @@ func (this *TopicController) View() {
 
 func (this *TopicController) Edit() {
 	tid := this.Ctx.Input.Params()["0"]
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
 	this.TplName = "topicEdit.html"
 
 	topic, err := models.GetTopic(tid)
 	if nil != err {
-		beego.Error(err)
+		logs.Error(err)
 		this.Redirect("/", 302)
 		return
 	}
@@ -81,14 +77,9 @@ func (this *TopicController) Edit() {
 }
 
 func (this *TopicController) Delete() {
-	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	if !checkAccount(this.Ctx) {
-		this.Redirect("/login", 302)
-		return
-	}
 	err := models.DelTopic(this.Ctx.Input.Param("0"))
 	if nil != err {
-		beego.Error(err)
+		logs.Error(err)
 	}
 	this.Redirect("/topic", 302)
 	return
@@ -114,26 +105,33 @@ func (this *TopicController) Post() {
 	//获取附件
 	_, fileHeader, err := this.GetFile("attachment")
 	if nil != err {
-		beego.Error(err.Error())
+		logs.Error(err.Error())
 	}
 	var attachmentFileName string
 	if fileHeader != nil {
 		//保存附件
 		attachmentFileName = fileHeader.Filename
-		beego.Info("》》》》》 上传附件" + attachmentFileName)
+		logs.Info("》》》》》 上传附件" + attachmentFileName)
 		err = this.SaveToFile("attachment", path.Join("attachment", attachmentFileName))
 		if nil != err {
-			beego.Error(err)
+			logs.Error(err)
 		}
 	}
 
 	if len(tid) == 0 {
-		err = models.AddTopic(title, content, category, label, attachmentFileName)
+		id, err := models.AddTopic(title, content, category, label, attachmentFileName)
+		if nil != err {
+			logs.Error(err)
+		} else {
+			this.Data["json"] = e.SetResult(code, e.GetMsg(code), id)
+			this.ServeJSON()
+			return
+		}
 	} else {
 		err = models.EditTopic(tid, title, content, category, label, attachmentFileName)
 	}
 	if nil != err {
-		beego.Error(err)
+		logs.Error(err)
 	}
 	this.Data["json"] = e.SetResult(code, e.GetMsg(code), nil)
 	this.ServeJSON()

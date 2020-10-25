@@ -25,12 +25,11 @@
     <script src="/static/mode/markdown/markdown.js"></script>
     <script src="/static/mode/scheme/scheme.js"></script>
     <script src="/static/keymap/sublime.js"></script>
-    <!--toast-->
-    <link href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 </head>
-<body style="background-color:#eee">
-
+<body style="">
+<div>
+    
+</div>
 <!-- Post Content -->
 <div class="editContainer">
     <div class="row">
@@ -63,8 +62,8 @@
                                 <input type="text" class="form-control" id="inputTitle" value="{{.Topic.Title}}">
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="inputState">分类</label>
-                                <select id="inputState" class="form-control">
+                                <label for="inputCate">分类</label>
+                                <select id="inputCate" class="form-control">
                                     <option selected>{{.Topic.Category}}</option>
                                     {{range  .Categories}}
                                         <option>{{.Title}}</option>
@@ -76,12 +75,31 @@
                             <div class="form-group col-md-12">
                                 <article id="articleId"></article>
                                 <input type="hidden" id="articleText" value="{{.Topic.Content}}">
+                                <input type="hidden" id="inputTid" value="{{.Tid}}">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="list-cate" role="tabpanel"
-                     aria-labelledby="list-cate-list">分类编辑aaaaaaa
+                     aria-labelledby="list-cate-list">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="mytable">
+                                    <thead>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>名称</td>
+                                        <td>文章数</td>
+                                        <td>浏览数</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="list-conf" role="tabpanel"
                      aria-labelledby="list-conf-list">配置cccccccc
@@ -103,7 +121,10 @@
 </div>
 
 {{ template "footer" .}}
+<!-- 表格 -->
+<script src="/static/vendor/bootstrap/js/bootstable.js"></script>
 </body>
+
 <script>
     //编辑器组件
     var editor = CodeMirror(document.getElementById("articleId"), {
@@ -121,7 +142,7 @@
     //toast 配置
     let toast = new h5toast.Toast({
         position: 'top-right',
-        timeout: 1235
+        timeout: 1895
     })
 
     let pending;
@@ -140,6 +161,12 @@
 
     let editFlag = 1;//1:博客；    2:分类;   3:配置；
 
+    function getAllCate() {
+        $.get("/category", function (data) {
+            rowAddNew('mytable', data)
+        })
+    }
+
     //编辑区调整
     function editBtn(e) {
         let text = $(e).text()
@@ -148,9 +175,10 @@
         }
         if (text && text.indexOf('分类') > -1) {
             editFlag = 2;
+            getAllCate()
         }
         if (text && text.indexOf('配置') > -1) {
-            editFlag = 2;
+            editFlag = 3;
         }
 
     }
@@ -173,7 +201,9 @@
     function add(e) {
         switch (editFlag) {
             case  1:
-
+                $('#inputTitle').val('');
+                $('#inputTid').val('');
+                editor.setValue('');
                 break;
             case  2:
 
@@ -188,7 +218,7 @@
         switch (editFlag) {
             case  1:
                 let title = $('#inputTitle').val();
-                let category = $('#inputState').val();
+                let category = $('#inputCate').val();
                 let content = editor.getValue();
                 let tid = $('#inputTid').val();
                 $.post("/topic",
@@ -198,10 +228,16 @@
                         "content": content,
                         "tid": tid
                     }, function (e) {
-                        if (e.Code != 200) {
-                            toast.error("编辑失败！" + e.Msg)
+                        if (tid) {
+                            if (e.Code && e.Code == 200) {
+                                toast.success("提交成功！")
+                            } else {
+                                toast.error("提交失败！" + e.Msg)
+                            }
                         } else {
-                            toast.success("提交成功！")
+                            if (e && e.Data) {
+                                window.location.href = " http://localhost:9002/topic/edit/" + e.Data
+                            }
                         }
                     })
                 break;
@@ -213,5 +249,11 @@
                 break;
         }
     }
+
+    $('#mytable').SetEditable({
+        $addButton: $('#addBtn'),
+    });
+
+    //分类表格
 </script>
 </html>
